@@ -8,7 +8,7 @@
  * children中采用二维数组是用于给子菜单分列，如果想在新列中加菜单，添加一个数组即可
  */
 const menu = [
-  { name: '应用中心', iconClass: 'fa fa-th-large', router: 'AppCenter' },
+  { name: '应用中心', iconClass: 'fa fa-th-large', router: 'AppCenter', hide: true },
 
   // 基础资料
   {

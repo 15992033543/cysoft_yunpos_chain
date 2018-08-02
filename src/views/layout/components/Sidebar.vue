@@ -19,7 +19,7 @@
           class="menu-item"
           v-for="(item, index) in menu"
           :key="index"
-          @mouseenter="showMenu(index, $event.currentTarget, item.children)"
+          @mouseenter="showMenu(index, $event.currentTarget)"
           @mouseleave="hideMenu(index)"
           @click="go(item.router)">
           <div class="hidden-layout">
@@ -56,34 +56,19 @@ export default {
   },
 
   data () {
-    const realMenu = this.menuHandler(menu)
     return {
       isOpen: true,
-      menu: realMenu,
+      menu: menu,
       logoImg: logoImg,
       closeImg: closeImg,
       downloadImg: downloadImg
     }
   },
 
-  methods: {
-    menuHandler (menu) {
-      const realMenu = []
-      if (Array.isArray(menu)) {
-        menu.forEach(item => {
-          if (!item.hide) {
-            realMenu.push(item)
-            if (item.children) {
-              for (let i = item.children.length - 1; i >= 0; i--) {
-                console.log(item.children[i])
-              }
-            }
-          }
-        })
-      }
-      return realMenu
-    },
+  created () {
+  },
 
+  methods: {
     showMenu (index, target) {
       this.$refs.menuContainer[index].show(target, this.isOpen)
     },
