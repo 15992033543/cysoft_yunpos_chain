@@ -38,7 +38,9 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary"><i class="fa fa-search"></i> 查询</el-button>
+          <el-button type="primary" @click="query">
+            <i class="fa fa-search"></i> 查询
+          </el-button>
         </el-form-item>
       </div>
     </el-form>
@@ -185,6 +187,10 @@ export default {
       this.fetchOrderList(0)
     },
 
+    query () {
+      this.fetchOrderList(0)
+    },
+
     add () {
       this.$appPush({ name: 'PurchaseOrderAdd', closeTo: true })
     },
@@ -225,7 +231,7 @@ export default {
       }).then(res => {
         this.loading = false
         if (res.Success) {
-          this.orderList = res.Data.Data
+          this.orderList = Array.isArray(res.Data.Data) ? res.Data.Data : []
           this.total = res.Data.TotalCount
         }
       })
