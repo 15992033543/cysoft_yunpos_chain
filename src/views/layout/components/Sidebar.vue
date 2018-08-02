@@ -66,9 +66,77 @@ export default {
   },
 
   created () {
+    this.menuHandler()
   },
 
   methods: {
+    menuHandler () {
+      this.deleteLowest()
+      this.deleteGroup()
+      this.deleteColumn()
+      this.deleteMenu()
+    },
+
+    deleteLowest () {
+      menu.forEach(m => {
+        const columns = m.children
+        if (Array.isArray(columns)) {
+          columns.forEach(c => {
+            if (Array.isArray(c)) {
+              c.forEach(g => {
+                const items = g.children
+                if (Array.isArray(items)) {
+                  for (let i = items.length - 1; i >= 0; i--) {
+                    if (items[i].hide) {
+                      items.splice(i, 1)
+                    }
+                  }
+                }
+              })
+            }
+          })
+        }
+      })
+    },
+
+    deleteGroup () {
+      menu.forEach(m => {
+        const columns = m.children
+        if (Array.isArray(columns)) {
+          columns.forEach(c => {
+            if (Array.isArray(c)) {
+              for (let i = c.length - 1; i >= 0; i--) {
+                if (c[i].hide || c[i].children.length === 0) {
+                  c.splice(i, 1)
+                }
+              }
+            }
+          })
+        }
+      })
+    },
+
+    deleteColumn () {
+      menu.forEach(m => {
+        const columns = m.children
+        if (Array.isArray(columns)) {
+          for (let i = columns.length - 1; i >= 0; i--) {
+            if (columns[i].length === 0) {
+              columns.splice(i, 1)
+            }
+          }
+        }
+      })
+    },
+
+    deleteMenu () {
+      for (let i = menu.length - 1; i >= 0; i--) {
+        if (menu[i].hide || (menu[i].children && menu[i].children.length) === 0) {
+          menu.splice(i, 1)
+        }
+      }
+    },
+
     showMenu (index, target) {
       this.$refs.menuContainer[index].show(target, this.isOpen)
     },

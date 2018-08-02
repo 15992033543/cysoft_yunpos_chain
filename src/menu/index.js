@@ -8,7 +8,7 @@
  * children中采用二维数组是用于给子菜单分列，如果想在新列中加菜单，添加一个数组即可
  */
 const menu = [
-  { name: '应用中心', iconClass: 'fa fa-th-large', router: 'AppCenter', hide: true },
+  { name: '应用中心', iconClass: 'fa fa-th-large', router: 'AppCenter' },
 
   // 基础资料
   {
@@ -19,7 +19,6 @@ const menu = [
       [
         {
           groupName: '商品',
-          hide: true,
           children: [
             { name: '商品资料', router: 'GoodsDataList' },
             { name: '商品单位', router: 'GoodsUnitList' },
@@ -185,9 +184,9 @@ const menu = [
         {
           groupName: '配送',
           children: [
-            { name: '补货申请', hide: true },
-            { name: '配送出库', hide: true },
-            { name: '配送入库', hide: true }
+            { name: '补货申请' },
+            { name: '配送出库' },
+            { name: '配送入库' }
           ]
         },
         {
