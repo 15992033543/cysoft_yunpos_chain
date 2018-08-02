@@ -36,7 +36,7 @@
     * layout -- 母版页
       * components -- 页内组件（非通用，只对当前页有效的组件）
     * goodsData -- 模块，比如商品资料
-      * components -- 模块组件（非通用，只对当前页有效的组件）
+      * components -- 页内组件（非通用，只对当前页有效的组件）
       * List.vue -- 商品资料列表
       * Add.vue -- 商品资料新增/编辑
 
