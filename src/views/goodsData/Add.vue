@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import Share from './components/Share'
+import Share from './components/Shared'
 
 export default {
   name: 'GoodsDataAdd',

@@ -166,7 +166,7 @@ export default new Router({
         {
           path: 'share/refresh',
           name: 'Refresh',
-          component: () => import('@/views/share/Refresh'),
+          component: () => import('@/views/shared/Refresh'),
           meta: { title: '刷新中...', notag: true, nocache: true }
         },
 
