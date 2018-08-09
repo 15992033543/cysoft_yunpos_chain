@@ -1,14 +1,14 @@
 <template>
-  <share type="add"/>
+  <shared type="add"/>
 </template>
 
 <script>
-import Share from './components/Shared'
+import Shared from './components/Shared'
 
 export default {
   name: 'PurchaseOrderAdd',
 
-  components: { Share },
+  components: { Shared },
 
   created () {
   }

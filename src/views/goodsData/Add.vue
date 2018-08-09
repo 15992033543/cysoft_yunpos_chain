@@ -1,16 +1,16 @@
 <template>
-  <share
+  <shared
     type="add"/>
 </template>
 
 <script>
-import Share from './components/Shared'
+import Shared from './components/Shared'
 
 export default {
   name: 'GoodsDataAdd',
 
   components: {
-    Share
+    Shared
   }
 }
 </script>
