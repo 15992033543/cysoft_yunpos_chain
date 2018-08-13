@@ -43,7 +43,8 @@ export default {
       this.$nextTick(() => {
         const el = this.$refs.container
         const height = el.clientHeight
-        const parentOffsetTop = parentEl.offsetTop + 55
+        // const parentOffsetTop = parentEl.offsetTop + 55
+        const parentOffsetTop = parentEl.getBoundingClientRect().top
         const screenHeight = document.body.clientHeight
         const differ = (height + parentOffsetTop) - screenHeight
         el.style.top = differ > 0 ? (parentOffsetTop - differ - 1 + 'px') : (parentOffsetTop - 1 + 'px')
