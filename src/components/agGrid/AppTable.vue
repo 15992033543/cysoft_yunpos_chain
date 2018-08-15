@@ -4,7 +4,6 @@
     class="ag-theme-balham"
     :grid-options="gridOptions"
     style="height: 505px; width: 100%"
-    :row-height="40"
     :header-height="40"
     :column-defs="columnDefs"
     :row-data="rowData"
@@ -22,6 +21,7 @@
 <script>
 import { AgGridVue } from 'ag-grid-vue'
 import NormalHeader from './NormalHeader'
+import NormalCell from './NormalCell'
 
 export default {
   components: {
@@ -78,7 +78,9 @@ export default {
       },
       defaultColDef: {
         headerComponentFramework: NormalHeader,
-        cellClass: 'text-align-center'
+        cellClass: 'text-align-center',
+        autoHeight: true,
+        cellRendererFramework: NormalCell
       },
       id: `${this.$parent.$options.name}-${this.token}`,
       exportField: '',

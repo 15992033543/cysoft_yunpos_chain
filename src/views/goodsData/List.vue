@@ -241,7 +241,9 @@ export default {
           field: 'row_no',
           width: 40,
           suppressSizeToFit: true,
-          valueFormatter: p => (p.node.rowIndex + 1) + this.formData.page * this.formData.pageSize
+          cellRendererParams: {
+            filter: p => (p.node.rowIndex + 1) + this.formData.page * this.formData.pageSize
+          }
         },
         {
           headerName: '商品条码',

@@ -59,3 +59,10 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss">
+  .ag-grid-normal-cell {
+    height: 40px;
+    line-height: 40px;
+  }
+</style>

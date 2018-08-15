@@ -99,13 +99,17 @@ export default {
           field: 'row_no',
           width: 50,
           suppressSizeToFit: true,
-          valueFormatter: p => (p.node.rowIndex + 1) + this.formData.page * this.formData.pageSize
+          cellRendererParams: {
+            filter: p => (p.node.rowIndex + 1) + this.formData.page * this.formData.pageSize
+          }
         },
         {
           headerName: '开单日期',
           field: 'rq',
           width: 100,
-          valueFormatter: p => this.$dateTransformer(p.value)
+          cellRendererParams: {
+            filter: p => this.$dateTransformer(p.value)
+          }
         },
         { headerName: '单号', field: 'dh', width: 100 },
         { headerName: '订货门店', field: 'shop_name', width: 130 },

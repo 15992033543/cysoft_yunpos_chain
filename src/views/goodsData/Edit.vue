@@ -1,17 +1,17 @@
 <template>
-  <share
+  <shared
     type="edit"
     :id="id"/>
 </template>
 
 <script>
-import Share from './components/Shared'
+import Shared from './components/Shared'
 
 export default {
   name: 'GoodsDataEdit',
 
   components: {
-    Share
+    Shared
   },
 
   data () {

@@ -224,7 +224,7 @@ export function recursionDataHandler (data, topLevel = '#') {
 
 export function dateTransformer (value, format = 'yyyy-MM-dd') {
   if (!value) return ''
-  const reg = /[^\d]]*/g
+  const reg = /[^\d-]*/g
   const date = parseInt(value.replace(reg, ''))
   return new Date(date).format(format)
 }
