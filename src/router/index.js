@@ -52,7 +52,7 @@ export default new Router({
         },
 
         // ------------------------------- 商品资料模块 -------------------------------
-        { path: 'goodsData', redirect: 'goodsData/list' }, // 模块地址redirect至模块下的任意一个页面（通常是第一个菜单），防止直接访问此地址时出现空白页
+        { path: 'goodsData', redirect: 'goodsData/list' }, // 模块地址redirect至模块下的任意一个页面（通常是第一个菜单），防止直接访问此地址时404
         // 商品资料列表
         {
           path: 'goodsData/list',
