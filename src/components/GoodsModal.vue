@@ -30,7 +30,9 @@
             <el-form :inline="true" :model="formData" style="overflow: hidden">
               <div style="float: left">
                 <el-form-item>
-                  <el-button type="primary">新增商品</el-button>
+                  <el-button type="primary" @click="addGoods">
+                    <i class="fa fa-plus"></i> 新增商品
+                  </el-button>
                 </el-form-item>
               </div>
               <div class="text-align-right" style="float: right">
@@ -42,9 +44,12 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-input v-model="formData.barcode" placeholder="商品条码/编码/名称/助记码" clearable>
-                    <el-button slot="append" icon="el-icon-search"></el-button>
-                  </el-input>
+                  <el-input v-model="formData.barcode" placeholder="商品条码/编码/名称/助记码" clearable></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary">
+                    <i class="fa fa-search"></i> 查询
+                  </el-button>
                 </el-form-item>
               </div>
             </el-form>
@@ -57,8 +62,8 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="visible = false">确 定</el-button>
+        <el-button @click="hide">取 消</el-button>
+        <el-button type="primary" @click="hide">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -146,6 +151,15 @@ export default {
   methods: {
     show () {
       this.visible = true
+    },
+
+    hide () {
+      this.visible = false
+    },
+
+    addGoods () {
+      this.hide()
+      this.$appPush({ name: 'GoodsDataAdd' })
     }
   }
 }

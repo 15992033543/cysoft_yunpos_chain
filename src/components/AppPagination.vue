@@ -35,11 +35,11 @@ export default {
   methods: {
     pageSizeChange (pageSize) {
       window.localStorage.setItem('pageSize', pageSize)
-      this.$emit('change', null, pageSize)
+      this.$emit('change', this.currentPage, pageSize)
     },
 
     currentPageChange (currentPage) {
-      this.$emit('change', currentPage - 1, null)
+      this.$emit('change', currentPage - 1, this.pageSize)
     }
   }
 }

@@ -188,11 +188,12 @@ export default {
   methods: {
     gridReady () {
       // 放这里请求列表数据是因为需要用到table的加载效果（放created或者mounted中不会有效果）
-      this.fetchOrderList(0)
+      this.query()
     },
 
     query () {
-      this.fetchOrderList(0)
+      this.formData.page = 0
+      this.fetchOrderList()
     },
 
     add () {
@@ -226,7 +227,7 @@ export default {
     take (data) {
     },
 
-    fetchOrderList (page) {
+    fetchOrderList () {
       this.loading = true
       this.$httpAuth({
         url: '/DH/GetListData',
@@ -242,10 +243,9 @@ export default {
     },
 
     paginationChange (page, pageSize) {
-      if (pageSize) {
-        this.formData.pageSize = pageSize
-      }
-      this.fetchOrderList(page || 0)
+      this.formData.pageSize = pageSize
+      this.formData.page = page
+      this.fetchOrderList()
     },
 
     fetchShopList () {

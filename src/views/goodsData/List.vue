@@ -51,7 +51,9 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="fetchGoodsList(0)"><i class="fa fa-search"></i> 查询</el-button>
+            <el-button type="primary" @click="query">
+              <i class="fa fa-search"></i> 查询
+            </el-button>
           </el-form-item>
 
           <el-form-item>
@@ -139,7 +141,7 @@
               :props="treeProps"
               :default-expanded-keys="['0']"
               :filter-node-method="treeFilter"
-              @node-click="fetchGoodsList(0)"
+              @node-click="query"
               node-key="id"
               class="tree-custom"></el-tree>
           </div>
@@ -430,10 +432,9 @@ export default {
 
     // 分页回调
     paginationChange (page, pageSize) {
-      if (pageSize) {
-        this.formData.pageSize = pageSize
-      }
-      this.fetchGoodsList(page || 0)
+      this.formData.pageSize = pageSize
+      this.formData.page = page
+      this.fetchGoodsList()
     },
 
     // 获取品牌
@@ -473,15 +474,14 @@ export default {
           this.classificationList = this.$recursionDataHandler(res, '#')
           this.$nextTick(() => {
             this.$refs.elTree.setCurrentKey('0')
-            this.fetchGoodsList(0)
+            this.query()
           })
         }
       })
     },
 
     // 获取商品列表
-    fetchGoodsList (page) {
-      this.formData.page = page
+    fetchGoodsList () {
       this.tLoading = true
       this.formData.id_spfl = this.$refs.elTree.getCurrentKey()
       this.$httpAuth({
@@ -555,7 +555,7 @@ export default {
       const column = instance.column
       this.formData.special_order_field = column
       this.formData.special_order_descasc = instance.type
-      this.fetchGoodsList(0)
+      this.query()
       this.resetSort(column)
     },
 
@@ -571,6 +571,11 @@ export default {
       const index = this.sortHeaderComponents.findIndex(e => e.params.column.colId === vue.params.column.colId)
       index !== -1 && this.sortHeaderComponents.splice(index, 1)
       this.sortHeaderComponents.push(vue)
+    },
+
+    query () {
+      this.formData.page = 0
+      this.fetchGoodsList()
     }
   }
 }
