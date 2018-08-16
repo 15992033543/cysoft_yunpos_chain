@@ -66,6 +66,7 @@ const AppPlugin = {
     Vue.mixin(titleMixin)
     Vue.mixin(permissionMixin)
     Vue.mixin(tagMixin)
+
     Vue.prototype.$appPush = function (options = {}) {
       const name = options.name
       if (!name) {
@@ -83,6 +84,10 @@ const AppPlugin = {
       closeTo && deleteTag(this, name)
       refresh && deleteAlive(this, name)
       options.replace ? this.$router.replace(options) : this.$router.push(options)
+    }
+
+    Vue.prototype.$refresh = function () {
+      this.$appPush({ name: 'Refresh', params: { options: this.$store.state.tag.active } })
     }
   }
 }

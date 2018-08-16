@@ -46,7 +46,7 @@ export default {
 
   methods: {
     refresh () {
-      this.$appPush({ name: 'Refresh', params: { options: this.$store.state.tag.active } })
+      this.$refresh()
     },
 
     closeAllTag () {
