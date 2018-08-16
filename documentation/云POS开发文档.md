@@ -14,7 +14,8 @@
 
 ## 项目结构
 
-* src
+* documentation -- 文档
+* src -- 项目源码
   * api -- 封装了axios请求
   * assets -- 资源目录
     * js -- javascript文件
