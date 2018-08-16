@@ -43,11 +43,36 @@
       * List.vue -- 列表
       * Add.vue -- 新增
 
-## 规范
+## 路由（重要）
 
-### 路由
+1、路由配置文件在src/router/index.js
 
-* 路由的path规范为（模块名/页面），如商品资料列表（goodsData/list），新增商品资料（goodsData/add）
-* 路由必须给name，且与所指向component的name同名（为了做全局keepAlive）
-* 由于做了全局的keepAlive，跳转到需要缓存的页面请调用this.$appPush()方法，且必须通过name进行页面定位，不能使用path，比如：this.$appPush({ name: 'GoodsDataList', ... })
-* 加新模块时，必须将模块地址redirect到模块下的一个页面，如商品资料模块：{ path: 'goodsData', redirect: 'goodsData/list' }
+2、为了做全站缓存，路由与它所指向的组件一定要写name属性，且两者一致。比如商品资料列表：
+
+    // 路由配置
+    {
+      path: 'goodsData/list',
+      name: 'GoodsDataList',
+      component: () => import('@/views/goodsData/List')
+    }
+
+    // 组件配置
+    export default {
+      name: 'GoodsDataList',
+      ...
+    }
+
+3、为了灵活的控制缓存，跳转时，要使用this.$appPush()方法，并且必须使用name，不能使用path，其它参数与vue-router的push一致。比如：
+
+    this.$appPush({ name: 'GoodsDataList', ... })
+
+$appPush的其它选项：
+
+    // 跳转时，刷新目标页
+    this.$appPush({ name: 'GoodsDataList', refresh: true })
+
+    // 跳转时，先关闭目标页，再重新打开
+    this.$appPush({ name: 'GoodsDataList', closeTo: true })
+
+    // 跳转时，关闭当前页
+    this.$appPush({ name: 'GoodsDataList', closeFrom: true })
