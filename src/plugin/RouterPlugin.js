@@ -63,8 +63,8 @@ const tagMixin = {
 
 const AppPlugin = {
   install (Vue) {
-    Vue.mixin(titleMixin)
     Vue.mixin(permissionMixin)
+    Vue.mixin(titleMixin)
     Vue.mixin(tagMixin)
 
     Vue.prototype.$appPush = function (options = {}) {
