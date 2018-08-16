@@ -20,6 +20,8 @@ export default Vue.extend({
 <style lang="scss">
   .ag-grid-delect-index-cell {
     position: relative;
+    height: 40px;
+    line-height: 39px;
     .del-icon {
       background: #fb523d;
       border-radius: 14px;

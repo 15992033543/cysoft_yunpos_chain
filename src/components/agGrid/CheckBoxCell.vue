@@ -28,6 +28,8 @@ export default Vue.extend({
 
 <style lang="scss">
   .ag-grid-checkbox-cell {
+    height: 40px;
+    line-height: 39px;
     .el-checkbox__input {
       bottom: 2px;
     }

@@ -10,9 +10,12 @@
       </div>
       <div class="text-align-right" style="float: right">
         <el-form-item>
-          <el-input placeholder="单位名称" clearable>
-            <el-button slot="append" icon="el-icon-search"></el-button>
-          </el-input>
+          <el-input placeholder="单位名称" class="w-160" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">
+            <i class="fa fa-search"></i> 查询
+          </el-button>
         </el-form-item>
       </div>
     </el-form>

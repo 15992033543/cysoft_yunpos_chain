@@ -20,6 +20,8 @@ export default Vue.extend({
 <style lang="scss">
   .ag-grid-button-cell {
     position: relative;
+    height: 40px;
+    line-height: 39px;
     .btn {
       position: absolute;
       right: 0;

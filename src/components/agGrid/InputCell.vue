@@ -133,6 +133,8 @@ export default Vue.extend({
 
 <style lang="scss">
   .ag-grid-input-cell {
+    height: 40px;
+    line-height: 39px;
     .el-input {
       bottom: 1px;
       font-size: 12px;
