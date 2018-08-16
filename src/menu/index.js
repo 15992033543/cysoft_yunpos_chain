@@ -22,8 +22,8 @@ const menu = [
           children: [
             { name: '商品资料', router: 'GoodsDataList' },
             { name: '商品单位', router: 'GoodsUnitList' },
-            { name: '商品分类' },
-            { name: '品牌资料' },
+            { name: '商品分类', router: 'GoodsCategoryList' },
+            { name: '品牌资料', router: 'BrandDataList' },
             { name: '商品加工(组合)关系' },
             { name: '商品分割(拆分)关系' },
             { name: '商品调价' },

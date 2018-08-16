@@ -93,6 +93,28 @@ export default new Router({
           }
         },
 
+        // ------------------------------- 商品分类 -------------------------------
+        { path: 'goodsCategory', redirect: 'goodsCategory/list' },
+        {
+          path: 'goodsCategory/list',
+          name: 'GoodsCategoryList',
+          component: () => import('@/views/goodsCategory/List'),
+          meta: {
+            title: '商品分类'
+          }
+        },
+
+        // ------------------------------- 品牌资料 -------------------------------
+        { path: 'brandData', redirect: 'brandData/list' },
+        {
+          path: 'brandData/list',
+          name: 'BrandDataList',
+          component: () => import('@/views/brandData/List'),
+          meta: {
+            title: '品牌资料'
+          }
+        },
+
         // ------------------------------- 采购订单模块 -------------------------------
         { path: 'purchaseOrder', redirect: 'purchaseOrder/list' },
         // 采购订单列表
