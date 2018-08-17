@@ -6,10 +6,15 @@
           <el-button type="primary" @click="exportExcel">导出</el-button>
         </el-form-item>
         <el-form-item>
-          <date-range-picker
-            :begin="formData.rq_begin"
-            :end="formData.rq_end"
-            @change="dateChange"/>
+          <date-picker
+            :value="formData.rq_begin"
+            @change="date => formData.rq_begin = date"
+            placeholder="开始时间"/>
+          <span>-</span>
+          <date-picker
+            :value="formData.rq_end"
+            @change="date => formData.rq_end = date"
+            placeholder="结束时间"/>
         </el-form-item>
         <el-form-item>
           <el-select v-model="formData.id_shop" placeholder="请选择门店" filterable class="w-140">
@@ -48,14 +53,14 @@
 
 <script>
 import AppTable from '@/components/agGrid/AppTable'
-import DateRangePicker from '@/components/DateRangePicker'
+import DatePicker from '@/components/DatePicker'
 import AppPagination from '@/components/AppPagination'
 
 export default {
   name: 'StoreSalesDay',
 
   components: {
-    AppTable, DateRangePicker, AppPagination
+    AppTable, DatePicker, AppPagination
   },
 
   data () {
@@ -135,11 +140,6 @@ export default {
           this.tableData = list
         }
       })
-    },
-
-    dateChange (begin, end) {
-      this.formData.rq_begin = begin
-      this.formData.rq_end = end
     },
 
     // 计算毛利率

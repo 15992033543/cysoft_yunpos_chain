@@ -7,10 +7,15 @@
           <el-button type="primary" @click="exportGoods">导出</el-button>
         </el-form-item>
         <el-form-item>
-          <date-range-picker
-            :begin="goodsFormData.rq_begin"
-            :end="goodsFormData.rq_end"
-            @change="goodsDateChange"/>
+          <date-picker
+            :value="goodsFormData.rq_begin"
+            @change="date => goodsFormData.rq_begin = date"
+            placeholder="开始时间"/>
+          <span>-</span>
+          <date-picker
+            :value="goodsFormData.rq_end"
+            @change="date => goodsFormData.rq_end = date"
+            placeholder="结束时间"/>
         </el-form-item>
         <el-form-item>
           <el-select v-model="goodsFormData.id_shop" placeholder="请选择门店" filterable class="w-140">
@@ -48,7 +53,7 @@
           <el-checkbox>仅查退货商品</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="fetchGoodsList(0)">查询</el-button>
+          <el-button type="primary" @click="query">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -79,14 +84,14 @@
 
 <script>
 import AppTable from '@/components/agGrid/AppTable'
-import DateRangePicker from '@/components/DateRangePicker'
 import AppPagination from '@/components/AppPagination'
+import DatePicker from '@/components/DatePicker'
 
 export default {
   name: 'GoodsRetailSummary',
 
   components: {
-    AppTable, DateRangePicker, AppPagination
+    AppTable, DatePicker, AppPagination
   },
 
   data () {
@@ -185,16 +190,10 @@ export default {
       })
     },
 
-    goodsDateChange (begin, end) {
-      this.goodsFormData.rq_begin = begin
-      this.goodsFormData.rq_end = end
-    },
-
     // 按商品查询
-    fetchGoodsList (page) {
+    fetchGoodsList () {
       this.goodsLoading = true
       this.goodsFormData.id_spfl = this.goodsClassificationSelected.join(',')
-      this.goodsFormData.page = page
       this.$httpAuth({
         url: '/report/spxshzreportapi',
         method: 'get',
@@ -214,10 +213,14 @@ export default {
     exportGoods () {},
 
     goodsPaginationChange (page, pageSize) {
-      if (pageSize) {
-        this.goodsFormData.pageSize = pageSize
-      }
-      this.fetchGoodsList(page || 0)
+      this.goodsFormData.page = page
+      this.goodsFormData.pageSize = pageSize
+      this.fetchGoodsList()
+    },
+
+    query () {
+      this.goodsFormData.page = 0
+      this.fetchGoodsList()
     }
   }
 }

@@ -66,12 +66,12 @@
 
     this.$appPush({ name: 'GoodsDataList', ... })
 
-$appPush的其它选项：
+$appPush()选项：
 
     // 跳转时，刷新目标页
     this.$appPush({ name: 'GoodsDataList', refresh: true })
 
-    // 跳转时，先关闭目标页，再重新打开
+    // 跳转时，先关闭目标页，再重新打开（不会刷新目标页，只是将目标页的标签提前到这个页面标签的后）
     this.$appPush({ name: 'GoodsDataList', closeTo: true })
 
     // 跳转时，关闭当前页
