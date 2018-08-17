@@ -1,6 +1,6 @@
 <template>
   <div>
-    GoodsRetailFlow
+    商品零售流水
   </div>
 </template>
 

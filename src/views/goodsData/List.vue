@@ -465,7 +465,7 @@ export default {
 
     // 编辑
     edit () {
-      this.$appPush({ name: 'GoodsDataEdit', query: { id: '3312' }, refresh: true })
+      this.$appPush({ name: 'GoodsDataEdit', query: { id: '3312' }, closeTo: true, refresh: true })
     },
 
     // 分页回调
