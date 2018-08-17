@@ -15,7 +15,7 @@ import 'ag-grid/dist/styles/ag-theme-balham.css'
 import './assets/scss/app.scss'
 import './assets/scss/overwrite.scss'
 
-// import 'babel-polyfill' // 兼容ie
+import 'babel-polyfill' // 兼容ie
 
 Vue.config.productionTip = false
 
