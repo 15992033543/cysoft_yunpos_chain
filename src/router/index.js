@@ -176,11 +176,20 @@ export default new Router({
         },
         // 库存报损查询
         {
-          path: 'report/stockScrapQuery',
-          name: 'StockScrapQuery',
-          component: () => import('@/views/report/StockScrapQuery'),
+          path: 'report/stockScrap',
+          name: 'StockScrap',
+          component: () => import('@/views/report/StockScrap'),
           meta: {
             title: '库存报损查询'
+          }
+        },
+        // 库存报损查询
+        {
+          path: 'report/purchaseHistory',
+          name: 'PurchaseHistory',
+          component: () => import('@/views/report/PurchaseHistory'),
+          meta: {
+            title: '历史进货查询'
           }
         },
 

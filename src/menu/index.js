@@ -324,7 +324,7 @@ const menu = [
             { name: '商品进销存明细' },
             { name: '库存调整明细' },
             { name: '快速盘点明细' },
-            { name: '库存报损查询', router: 'StockScrapQuery' },
+            { name: '库存报损查询', router: 'StockScrap' },
             { name: '库存预警查询' },
             { name: '库存上下限' }
           ]
@@ -355,7 +355,7 @@ const menu = [
           children: [
             { name: '进货统计' },
             { name: '订单收货查询' },
-            { name: '历史进货查询' }
+            { name: '历史进货查询', router: 'PurchaseHistory' }
           ]
         }
       ],

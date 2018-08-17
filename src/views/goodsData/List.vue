@@ -74,14 +74,14 @@
               </el-form-item>
 
               <el-form-item label="供应商">
-                <el-select v-model="formData.id_gys" filterable class="w-160">
+                <el-select v-model="formData.id_gys" filterable class="w-150">
                   <el-option label="全部供应商" value=""/>
                   <el-option v-for="item in supplierList" :key="item.id" :label="item.mc" :value="item.id"/>
                 </el-select>
               </el-form-item>
 
               <el-form-item label="计量方式">
-                <el-select v-model="formData.flag_czfs" filterable class="w-160">
+                <el-select v-model="formData.flag_czfs" filterable class="w-150">
                   <el-option label="全部" value=""/>
                   <el-option label="普通" value="0"/>
                   <el-option label="称重" value="1"/>
@@ -90,7 +90,7 @@
               </el-form-item>
 
               <el-form-item label="品牌">
-                <el-select v-model="formData.id_pp" filterable class="w-160">
+                <el-select v-model="formData.id_pp" filterable class="w-150">
                   <el-option label="全部品牌" value=""/>
                   <el-option v-for="item in brandList" :key="item.id" :label="item.mc" :value="item.id"/>
                 </el-select>
@@ -99,15 +99,15 @@
 
             <div>
               <el-form-item label="助记码">
-                <el-input v-model="formData.zjm" placeholder="商品名称" clearable class="w-160"></el-input>
+                <el-input v-model="formData.zjm" placeholder="助记码" clearable class="w-150"></el-input>
               </el-form-item>
 
               <el-form-item label="规格">
-                <el-input v-model="formData.gg" placeholder="商品名称" clearable class="w-160"></el-input>
+                <el-input v-model="formData.gg" placeholder="规格" clearable class="w-150"></el-input>
               </el-form-item>
 
-              <el-form-item label="产地" style="margin-right: 0">
-                <el-input v-model="formData.cd" placeholder="商品名称" clearable class="w-160"></el-input>
+              <el-form-item label="产地">
+                <el-input v-model="formData.cd" placeholder="产地" clearable class="w-150"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -183,7 +183,6 @@ import OperationCell from '@/components/agGrid/OperationCell'
 import TerminalModal from './components/TerminalModal'
 import ConfirmModal from '@/components/ConfirmModal'
 import SortHeader from '@/components/agGrid/SortHeader'
-import NormalCell from '@/components/agGrid/NormalCell'
 
 export default {
   name: 'GoodsDataList',
@@ -288,17 +287,56 @@ export default {
         },
         { headerName: '商品分类', field: 'spfl_mc', width: 100 },
         { headerName: '单位', field: 'dw', width: 50 },
-        { headerName: '零售价', field: 'dj_ls', width: 80, cellClass: 'text-align-right', valueFormatter: p => this.$accRound(p.value, 2) },
-        { headerName: '进货价', field: 'dj_jh', width: 80, cellClass: 'text-align-right', valueFormatter: p => this.$accRound(p.value, 2) },
-        { headerName: '会员价', field: 'dj_hy', width: 80, cellClass: 'text-align-right', valueFormatter: p => this.$accRound(p.value, 2) },
-        { headerName: '批发价', field: 'dj_pf', width: 80, cellClass: 'text-align-right', valueFormatter: p => this.$accRound(p.value, 2) },
-        { headerName: '配送价', field: 'dj_ps', width: 80, cellClass: 'text-align-right', valueFormatter: p => this.$accRound(p.value, 2) },
+        {
+          headerName: '零售价',
+          field: 'dj_ls',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, 2)
+          }
+        },
+        {
+          headerName: '进货价',
+          field: 'dj_jh',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, 2)
+          }
+        },
+        {
+          headerName: '会员价',
+          field: 'dj_hy',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, 2)
+          }
+        },
+        {
+          headerName: '批发价',
+          field: 'dj_pf',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, 2)
+          }
+        },
+        {
+          headerName: '配送价',
+          field: 'dj_ps',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, 2)
+          }
+        },
         { headerName: '规格', field: 'gg', width: 90 },
         {
           headerName: '状态',
           field: 'flag_state',
           width: 60,
-          cellRendererFramework: NormalCell,
           cellRendererParams: {
             cellClass: p => {
               return p.value === 1 ? 'verify-text-color' : 'no-verify-text-color'

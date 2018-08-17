@@ -239,8 +239,7 @@ export default {
       left: 0;
       right: 0;
       bottom: 50px;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
       z-index: 3000;
 
       .menu-list {

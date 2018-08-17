@@ -23,7 +23,7 @@
         <el-form-item>
           <el-input class="w-140" v-model="formData.mc_sp" placeholder="商品名称" :clearable="true"></el-input>
         </el-form-item>
-        <el-form-item style="margin-right: 0">
+        <el-form-item>
           <el-button type="primary" @click="query">
             <i class="fa fa-search"></i> 查询
           </el-button>
@@ -67,7 +67,7 @@ import DateRangePicker from '@/components/DateRangePicker'
 import AppPagination from '@/components/AppPagination'
 
 export default {
-  name: 'StockScrapQuery',
+  name: 'StockScrap',
 
   components: {
     AppTable, DateRangePicker, AppPagination

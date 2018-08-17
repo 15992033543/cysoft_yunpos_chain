@@ -15,11 +15,17 @@
         </el-form-item>
 
         <el-form-item>
-          <date-range-picker
-            :begin="formData.start_time"
-            :end="formData.start_time_end"
-            @change="dateChange"
-            type="daterange"/>
+          <date-picker
+            type="date"
+            :value="formData.start_time"
+            @change="date => formData.start_time = date"
+            placeholder="开始时间"/>
+          <span>-</span>
+          <date-picker
+            type="date"
+            :value="formData.start_time_end"
+            @change="date => formData.start_time_end = date"
+            placeholder="结束时间"/>
         </el-form-item>
 
         <el-form-item>
@@ -65,17 +71,17 @@
 </template>
 
 <script>
-import DateRangePicker from '@/components/DateRangePicker'
 import AppTable from '@/components/agGrid/AppTable'
 import OperationCell from '@/components/agGrid/OperationCell'
 import NormalCell from '@/components/agGrid/NormalCell'
 import AppPagination from '@/components/AppPagination'
+import DatePicker from '@/components/DatePicker'
 
 export default {
   name: 'PurchaseOrderList',
 
   components: {
-    DateRangePicker, AppTable, AppPagination
+    DatePicker, AppTable, AppPagination
   },
 
   data () {

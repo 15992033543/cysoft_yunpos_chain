@@ -54,6 +54,19 @@
   margin-top: 15vh;
 }
 
+.el-table .el-table__header thead th {
+  background-color: #F5F7F7;
+}
+
+.text-align-right .el-form-item {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.text-align-right .el-form-item:first-child {
+  margin-left: 0;
+}
+
 // 重写ag-grid样式
 $border-color: #dcdfe6;
 // $cell-heigit: 40px;

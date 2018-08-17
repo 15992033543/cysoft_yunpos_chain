@@ -1,5 +1,5 @@
 <template>
-  <div :class="cellClass" :style="cellStyle">{{ value }}</div>
+  <div :class="cellClass" :style="cellStyle" :title="value">{{ value }}</div>
 </template>
 
 <script>
@@ -64,5 +64,9 @@ export default Vue.extend({
   .ag-grid-normal-cell {
     height: 40px;
     line-height: 39px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>

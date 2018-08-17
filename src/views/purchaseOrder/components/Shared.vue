@@ -23,7 +23,7 @@
         <div class="card-body">
           <el-form :inline="true" :model="formData" label-width="70px">
             <el-form-item label="开单日期" prop="rq">
-              <date-picker type="date" :value="formData.rq" @change="date => formData.rq = date"/>
+              <date-picker type="date" :value="formData.rq" @change="date => formData.rq = date" style="width: 160px"/>
             </el-form-item>
             <el-form-item label="单号" prop="dh">
               <el-input v-model="formData.dh" placeholder="请输入单号" clearable class="w-160"></el-input>

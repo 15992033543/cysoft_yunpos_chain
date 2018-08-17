@@ -3,11 +3,11 @@
     v-model="d"
     align="left"
     :type="type"
-    placeholder="选择日期"
+    :placeholder="placeholder"
     :picker-options="pickerOptions"
     @change="dateChange"
     :value-format="type === 'date' ? 'yyyy-MM-dd' : 'yyyy-MM-dd hh:mm:ss'"
-    :style="{ width: type === 'date' ? '160px' : '190px' }">
+    :style="{ width: type === 'date' ? '130px' : '185px' }">
   </el-date-picker>
 </template>
 
@@ -18,6 +18,10 @@ export default {
     type: {
       type: String,
       default: 'date'
+    },
+    placeholder: {
+      type: String,
+      default: '日期选择'
     }
   },
   data () {
@@ -28,14 +32,6 @@ export default {
             text: '今天',
             onClick (picker) {
               picker.$emit('pick', new Date())
-            }
-          },
-          {
-            text: '一周前',
-            onClick (picker) {
-              const date = new Date()
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', date)
             }
           }
         ]

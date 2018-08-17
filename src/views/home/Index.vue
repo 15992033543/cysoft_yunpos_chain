@@ -10,11 +10,17 @@
           <el-tab-pane>
             <span slot="label">
               日期范围选择：
-              <date-range-picker
-                :begin="beginDate"
-                :end="endDate"
-                @change="dateChange"/>
-                <el-button type="primary" style="position:relative; bottom: 1px" @click="submit">确定</el-button>
+              <date-picker
+                :value="beginDate"
+                @change="date => beginDate = date"
+                placeholder="开始时间"/>
+              <span>-</span>
+              <date-picker
+                type="date"
+                :value="endDate"
+                @change="date => endDate = date"
+                placeholder="结束时间"/>
+              <el-button type="primary" style="position:relative; bottom: 1px" @click="submit">确定</el-button>
             </span>
           </el-tab-pane>
         </el-tabs>
@@ -109,14 +115,14 @@
 </template>
 
 <script>
-import DateRangePicker from '@/components/DateRangePicker'
 import echarts from 'echarts'
+import DatePicker from '@/components/DatePicker'
 
 export default {
   name: 'Home',
 
   components: {
-    DateRangePicker
+    DatePicker
   },
 
   data () {
