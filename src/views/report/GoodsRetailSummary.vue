@@ -4,7 +4,9 @@
       <!-- 按商品表单 -->
       <el-form ref="formEl" :inline="true" :model="goodsFormData" v-show="this.tagSelected === 'goods'">
         <el-form-item>
-          <el-button type="primary" @click="exportGoods">导出</el-button>
+          <el-button type="primary" @click="exportGoods">
+            <i class="fa fa-cloud-download"></i> 导出
+          </el-button>
         </el-form-item>
         <el-form-item>
           <date-picker
@@ -53,7 +55,9 @@
           <el-checkbox>仅查退货商品</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="query">查询</el-button>
+          <el-button type="primary" @click="query">
+            <i class="fa fa-search"></i> 查询
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -227,5 +231,4 @@ export default {
 </script>
 
 <style>
-
 </style>
