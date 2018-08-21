@@ -3,23 +3,40 @@
     <ul class="tag-container">
       <li
         v-for="(item, index) in tags"
-        :class="[ 'tag', item.type === currentType && 'active' ]"
+        :class="[ 'tag', item.type === currentType && 'active', index === 0 && 'radius-left', index === tags.length - 1 && 'radius-right' ]"
         :key="index"
         @click="tagClick(item.type)">{{ item.title }}</li>
     </ul>
 
-    <el-form ref="form" :model="form" size="medium" style="margin-top: 20px">
-      <el-form-item>
-        <el-input v-model="form.username"></el-input>
+    <el-form ref="form" :model="form" style="margin-top: 15px">
+      <el-form-item v-show="currentType === 'employee'">
+        <el-input v-model="form.username" clearable placeholder="请输入企业号"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="form.password"></el-input>
+        <el-input v-model="form.username" clearable placeholder="请输入用户名"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="form.remember">忘记密码</el-checkbox>
+        <el-input v-model="form.password" clearable placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">登录</el-button>
+        <div style="float: left">
+          <el-checkbox v-model="form.remember">记住密码</el-checkbox>
+        </div>
+        <div style="float: right">
+          <el-button type="text" style="font-size: 14px">找回密码</el-button>
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" class="operation-btn">登录</el-button>
+      </el-form-item>
+      <el-form-item>
+        <div style="float: left">
+          <el-button type="text" style="font-size: 14px">演示账号</el-button>
+        </div>
+        <div style="float: right">
+          <span style="color: grey">没有账号？</span>
+          <el-button type="text" style="font-size: 14px">免费注册</el-button>
+        </div>
       </el-form-item>
     </el-form>
   </div>
@@ -32,7 +49,7 @@ export default {
       currentType: 'quick',
       tags: [
         { title: '快捷登录', type: 'quick' },
-        { title: '快捷登录', type: 'employee' }
+        { title: '员工登录', type: 'employee' }
       ],
       form: {
         username: '',
@@ -77,17 +94,28 @@ export default {
           border-color: #409EFF;
         }
       }
+
+      .radius-left {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+
+      .radius-right {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
     }
-    .el-input--medium .el-input__inner {
+    .el-input .el-input__inner {
       height: 45px;
       line-height: 45px;
     }
     .el-form-item {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
-    .el-button--medium {
-      padding: 15px 20px;
+    .operation-btn {
+      height: 45px;
       width: 100%;
+      font-size: 18px;
     }
   }
 </style>

@@ -56,6 +56,20 @@
 
 .el-table .el-table__header thead th {
   background-color: #F5F7F7;
+  font-size: 13px;
+  color: #58666e;
+}
+
+.el-table--border, .el-table--group {
+  border: 1px solid #dcdfe6;
+}
+
+.el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
+  border-right: 1px solid #dcdfe6;
+}
+
+.el-table td, .el-table th.is-leaf {
+  border-bottom: 1px solid #dcdfe6;
 }
 
 .text-align-right .el-form-item {
@@ -137,6 +151,10 @@ $border-color: #dcdfe6;
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+}
+
+.ag-theme-balham .ag-row-hover {
+  background-color: #F5F7FA;
 }
 
 .ag-theme-balham .ag-floating-bottom-viewport  {
