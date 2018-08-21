@@ -163,7 +163,10 @@ $border-color: #dcdfe6;
 
 .ag-overlay {
   z-index: 999;
-  pointer-events: auto;
+
+  .ag-overlay-loading-wrapper {
+    pointer-events: auto;
+  }
 }
 
 .loading-tips {
