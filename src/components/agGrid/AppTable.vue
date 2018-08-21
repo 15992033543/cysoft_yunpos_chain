@@ -56,7 +56,7 @@ export default {
 
     loadingTips: {
       type: String,
-      default: '请稍候...'
+      default: '加载中...'
     },
 
     summary: Array,

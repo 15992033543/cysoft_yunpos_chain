@@ -1,9 +1,9 @@
 <template>
-  <transition name="anim">
-    <keep-alive :include="$store.state.keepAlive.alivePages">
-      <router-view class="app-main"/>
-    </keep-alive>
-  </transition>
+  <!-- <transition name="anim"> -->
+  <keep-alive :include="$store.state.keepAlive.alivePages">
+    <router-view class="app-main"/>
+  </keep-alive>
+  <!-- </transition> -->
 </template>
 
 <script>
