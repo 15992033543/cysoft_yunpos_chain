@@ -228,3 +228,9 @@ export function dateTransformer (value, format = 'yyyy-MM-dd') {
   const date = parseInt(value.replace(reg, ''))
   return new Date(date).format(format)
 }
+
+export function getQuery (name) {
+  const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`)
+  const r = window.location.search.substr(1).match(reg)
+  return r ? unescape(r[2]) : null
+}

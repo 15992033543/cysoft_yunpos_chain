@@ -12,16 +12,47 @@ Vue.use(Router)
  */
 export default new Router({
   routes: [
+    // 账户
+    { path: '/account', redirect: { name: 'Login' } },
     // 登录页面
     {
-      path: '/login',
+      path: '/account/login',
       name: 'Login',
-      component: () => import('@/views/login/Index'),
+      component: () => import('@/views/account/Login'),
       meta: {
         nocache: true, // 不缓存此页面，每次进入都需要重新加载
         notag: true, // 此页面不会被推到标签栏
         title: '登录'
       }
+    },
+    // 注册页面
+    {
+      path: '/account/register',
+      name: 'Register',
+      component: () => import('@/views/account/Register'),
+      meta: {
+        nocache: true,
+        notag: true,
+        title: '注册'
+      }
+    },
+
+    // 错误
+    { path: '/error', redirect: { name: '404' } },
+    // 404找不到页面
+    { path: '*', redirect: { name: '404' } },
+    {
+      path: '/error/404',
+      name: '404',
+      component: () => import('@/views/error/404'),
+      meta: { notag: true, nocache: true, title: '找不到页面' }
+    },
+    // 401没有权限错误
+    {
+      path: '/error/401',
+      name: '401',
+      component: () => import('@/views/error/401'),
+      meta: { notag: true, nocache: true, title: '没有权限' }
     },
 
     // 主体
@@ -209,24 +240,6 @@ export default new Router({
           meta: { title: '新手引导' }
         }
       ]
-    },
-
-    // 错误
-    { path: 'error', redirect: { name: '404' } },
-    // 404找不到页面
-    { path: '*', redirect: { name: '404' } },
-    {
-      path: '/error/404',
-      name: '404',
-      component: () => import('@/views/error/404'),
-      meta: { notag: true, nocache: true, title: '找不到页面' }
-    },
-    // 401没有权限错误
-    {
-      path: '/error/401',
-      name: '401',
-      component: () => import('@/views/error/401'),
-      meta: { notag: true, nocache: true, title: '没有权限' }
     }
   ]
 })

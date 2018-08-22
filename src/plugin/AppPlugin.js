@@ -13,7 +13,8 @@ import {
   getLocalPageSize,
   exportFile,
   recursionDataHandler,
-  dateTransformer
+  dateTransformer,
+  getQuery
 } from '@/common'
 
 const AppPlugin = {
@@ -48,6 +49,8 @@ const AppPlugin = {
     Vue.prototype.$recursionDataHandler = recursionDataHandler
     // \/Date(1531670400000)\/日期格式转换器
     Vue.prototype.$dateTransformer = dateTransformer
+    // 获取url查询参数
+    Vue.prototype.$getQuery = getQuery
   }
 }
 

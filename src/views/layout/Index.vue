@@ -16,6 +16,7 @@ import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'
 import AppMain from './components/AppMain'
+import { getQuery } from '@/common'
 
 export default {
   name: 'Layout',
@@ -33,6 +34,15 @@ export default {
 
   beforeDestroy () {
     document.removeEventListener('keydown', this.refreshThisPage)
+  },
+
+  beforeRouteEnter (to, from, next) {
+    const token = getQuery('token')
+    if (token) {
+      location.href = `http://${location.host}/#/home`
+    } else {
+      next()
+    }
   },
 
   methods: {
