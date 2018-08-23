@@ -134,15 +134,17 @@ export default {
       }
     },
 
-    // 
+    // 切换登录方式
     tagClick (type) {
       this.currentType = type
     },
 
+    // 跳转到注册页
     goRegister () {
       this.$appPush({ name: 'Register' })
     },
 
+    // 登录
     login () {
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -160,6 +162,7 @@ export default {
       })
     },
 
+    // 登录处理程序
     loginHandler (res) {
       this.loading = false
       switch (res.Data.level) {
