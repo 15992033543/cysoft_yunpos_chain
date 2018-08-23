@@ -124,11 +124,11 @@ export default {
   },
 
   methods: {
+    // 如果登录3次失败后，时间已经过了3分钟，那么不再显示识别码输入框
     initCodeVisible () {
-      const failInfo = window.localStorage.getItem('failInfo')
-      if (failInfo) {
-        const timeStamp = Number(failInfo.split('|')[0])
-        const time = new Date().getTime() - timeStamp
+      const failTime = window.localStorage.getItem('failTime')
+      if (failTime) {
+        const time = new Date().getTime() - Number(failTime)
         const duration = 60 * 3 * 1000 // 3分钟
         this.codeVisible = time < duration
       }
@@ -211,7 +211,7 @@ export default {
       const failCount = res.Data.fail_count
       // 如果失败次数>=3，显示识别码，并记录失败次数和时间，用于刷新后判断是否显示识别码
       if (failCount >= 3) {
-        window.localStorage.setItem('failInfo', `${new Date().getTime()}|${failCount}`)
+        window.localStorage.setItem('failTime', new Date().getTime())
         this.codeVisible = true
       }
     },
