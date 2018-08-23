@@ -134,6 +134,7 @@ export default {
       }
     },
 
+    // 
     tagClick (type) {
       this.currentType = type
     },
