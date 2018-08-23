@@ -19,7 +19,7 @@
         <el-form-item>
           <el-input v-model="formData.password" clearable placeholder="请输入密码" type="password"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="text-item">
           <div style="float: left">
             <el-checkbox v-model="formData.remember">记住密码</el-checkbox>
           </div>
@@ -30,7 +30,7 @@
         <el-form-item>
           <el-button type="primary" class="operation-btn" @click="login" :loading="loading">{{ loading ? '登录中...' : '登录' }}</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="text-item">
           <div style="float: left">
             <el-button type="text" class="text-btn">演示账号</el-button>
           </div>
@@ -137,7 +137,7 @@ export default {
 
 <style lang="scss">
   .login {
-    width: 400px;
+    width: 380px;
     margin: 0 auto;
     background-color: white;
     padding: 20px;
@@ -147,8 +147,8 @@ export default {
       overflow: hidden;
 
       .tag {
-        height: 45px;
-        line-height: 45px;
+        height: 40px;
+        line-height: 40px;
         text-align: center;
         border: 1px solid #dcdfe6;
         float: left;
@@ -179,23 +179,29 @@ export default {
       }
     }
     .el-input .el-input__inner {
-      height: 45px;
-      line-height: 45px;
+      height: 40px;
+      line-height: 40px;
     }
-    .el-form-item {
-      margin-bottom: 15px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
+    .el-form-item:last-child {
+      margin-bottom: 0;
     }
     .operation-btn {
-      height: 45px;
+      height: 40px;
       width: 100%;
       font-size: 18px;
     }
     .text-btn {
       font-size: 14px;
+    }
+    .text-item {
+      .el-form-item__content {
+        height: 20px;
+        line-height: 20px;
+      }
+
+      .text-btn {
+        padding: 0;
+      }
     }
   }
 </style>

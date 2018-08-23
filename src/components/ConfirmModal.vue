@@ -3,7 +3,7 @@
     width="400px"
     title="提示"
     :visible.sync="visible">
-    <div class="confirm-modal-content">{{ message }}</div>
+    <div class="confirm-modal-content" v-html="message"></div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="hide">{{ cancelText }}</el-button>
       <el-button type="primary" @click="confirm" :loading="loading">{{ confirmText }}</el-button>
@@ -18,11 +18,11 @@ export default {
   props: {
     cancelText: {
       type: String,
-      default: '取 消'
+      default: '取消'
     },
     confirmText: {
       type: String,
-      default: '确 定'
+      default: '确定'
     }
   },
 

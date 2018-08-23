@@ -1,5 +1,9 @@
 import config from '../../config'
 
+export const phoneReg = /^1[0-9]{10}$/
+
+export const passwordReg = /^[0-9A-Za-z_]{6,20}$/
+
 export function dateFormat (fmt) {
   const o = {
     'M+': this.getMonth() + 1,
@@ -233,4 +237,17 @@ export function getQuery (name) {
   const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`)
   const r = window.location.search.substr(1).match(reg)
   return r ? unescape(r[2]) : null
+}
+
+export function toFormData (data) {
+  if (Object.prototype.toString.call(data).indexOf('Object') === -1) {
+    console.info('the parameter is not a object!')
+    return null
+  }
+  const fd = new FormData()
+  const keys = Object.keys(data)
+  keys.forEach(e => {
+    fd.append(e, data[e])
+  })
+  return fd
 }

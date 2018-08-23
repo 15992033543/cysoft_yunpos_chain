@@ -2,7 +2,7 @@
   <el-dialog
     title="用户服务协议"
     :visible.sync="visible"
-    width="600px">
+    width="650px">
     <div style="height: 450px; overflow: auto">
       <h2 class="text-align-center">云POS服务协议</h2>
       <p class="section">云POS是由广州市超赢信息科技有限公司（以下简称超赢科技）在该公司云POS（pos.cn）网站上管理商家进、销、存、收银、会员等专业化管理服务的平台。若您注册申请云POS账户并使用相应服务，您必须首先同意此协议。</p>
@@ -126,8 +126,8 @@
       <p>2017年01月01日</p>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button>不同意</el-button>
-      <el-button type="primary">同意</el-button>
+      <el-button @click="disagree">不同意</el-button>
+      <el-button type="primary" @click="agree">同意</el-button>
     </span>
   </el-dialog>
 </template>
@@ -138,17 +138,31 @@ export default {
 
   data () {
     return {
-      visible: false
+      visible: false,
+      agreeCallback: null,
+      disagreeCallback: null
     }
   },
 
   methods: {
-    show () {
+    show (agreeCallback, disagreeCallback) {
       this.visible = true
+      this.agreeCallback = agreeCallback
+      this.disagreeCallback = disagreeCallback
     },
 
     hide () {
       this.visible = false
+    },
+
+    agree () {
+      this.hide()
+      typeof this.agreeCallback === 'function' && this.agreeCallback()
+    },
+
+    disagree () {
+      this.hide()
+      typeof this.disagreeCallback === 'function' && this.disagreeCallback()
     }
   }
 }

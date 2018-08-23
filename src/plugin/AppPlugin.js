@@ -14,7 +14,10 @@ import {
   exportFile,
   recursionDataHandler,
   dateTransformer,
-  getQuery
+  getQuery,
+  phoneReg,
+  passwordReg,
+  toFormData
 } from '@/common'
 
 const AppPlugin = {
@@ -51,6 +54,12 @@ const AppPlugin = {
     Vue.prototype.$dateTransformer = dateTransformer
     // 获取url查询参数
     Vue.prototype.$getQuery = getQuery
+    // 手机正则
+    Vue.prototype.$phoneReg = phoneReg
+    // 密码正则
+    Vue.prototype.$passwordReg = passwordReg
+    // data转formData
+    Vue.prototype.$toFormData = toFormData
   }
 }
 
