@@ -9,16 +9,42 @@
           @click="tagClick(item.type)">{{ item.title }}</li>
       </ul>
 
-      <el-form ref="form" :model="formData" style="margin-top: 15px" size="medium">
-        <el-form-item v-show="currentType === 'employee'">
-          <el-input v-model="formData.username" clearable placeholder="请输入企业号"></el-input>
+      <el-form ref="form" :model="formData" :rules="formRules" style="margin-top: 15px" size="medium">
+        <el-form-item v-if="currentType === 'employee'" prop="company">
+          <el-input v-model="formData.company" clearable placeholder="请输入企业号" maxlength="11">
+            <div slot="append">
+              <el-tooltip class="item" effect="dark" content="企业号参见“系统设置>企业资料”" placement="right">
+                <i class="el-icon-question"></i>
+              </el-tooltip>
+            </div>
+          </el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="formData.username" clearable placeholder="请输入用户名"></el-input>
+
+        <el-form-item prop="username">
+          <el-input v-model="formData.username" clearable placeholder="请输入用户名" maxlength="11"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="formData.password" clearable placeholder="请输入密码" type="password"></el-input>
+
+        <el-form-item prop="password">
+          <el-input v-model="formData.password" clearable placeholder="请输入密码" type="password" maxlength="20"></el-input>
         </el-form-item>
+
+        <el-form-item prop="vaildcode" class="code-item" v-if="codeVisible">
+          <el-input ref="codeRef"
+            v-model="formData.vaildcode"
+            clearable
+            placeholder="请输入识别码"
+            maxlength="4">
+            <div slot="append" class="append-layout">
+              <img
+                :src="codeUrl"
+                class="code"
+                alt="识别码"
+                title="点击刷新"
+                @click="codeUrl = fetchCode()">
+            </div>
+          </el-input>
+        </el-form-item>
+
         <el-form-item class="text-item">
           <div style="float: left">
             <el-checkbox v-model="formData.remember">记住密码</el-checkbox>
@@ -27,9 +53,11 @@
             <el-button type="text" class="text-btn">找回密码</el-button>
           </div>
         </el-form-item>
+
         <el-form-item>
           <el-button type="primary" class="operation-btn" @click="login" :loading="loading">{{ loading ? '登录中...' : '登录' }}</el-button>
         </el-form-item>
+
         <el-form-item class="text-item">
           <div style="float: left">
             <el-button type="text" class="text-btn">演示账号</el-button>
@@ -46,6 +74,7 @@
 
 <script>
 import Shared from './components/Shared'
+import config from '@config'
 
 export default {
   name: 'Login',
@@ -62,15 +91,49 @@ export default {
         { title: '员工登录', type: 'employee' }
       ],
       formData: {
+        company: '',
         username: '',
         password: '',
+        vaildcode: '',
         remember: false
       },
-      loading: false
+      formRules: {
+        company: [
+          { required: true, message: '请输入企业号', trigger: 'blur' }
+        ],
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        vaildcode: [
+          { required: true, message: '请输入识别码', trigger: 'blur' }
+        ]
+      },
+      loading: false,
+      baseUrl: config.dev.proxyTable['/api'].target,
+      codeUrl: '',
+      codeVisible: false
     }
   },
 
+  created () {
+    this.codeUrl = this.fetchCode()
+    this.initCodeVisible()
+  },
+
   methods: {
+    initCodeVisible () {
+      const failInfo = window.localStorage.getItem('failInfo')
+      if (failInfo) {
+        const timeStamp = Number(failInfo.split('|')[0])
+        const time = new Date().getTime() - timeStamp
+        const duration = 60 * 3 * 1000 // 3分钟
+        this.codeVisible = time < duration
+      }
+    },
+
     tagClick (type) {
       this.currentType = type
     },
@@ -80,13 +143,19 @@ export default {
     },
 
     login () {
-      this.loading = true
-      this.$http({
-        url: '/account/login',
-        method: 'post',
-        data: this.formData
-      }).then(res => {
-        this.loginHandler(res)
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$http({
+            url: '/account/login',
+            method: 'post',
+            data: this.formData
+          }).then(res => {
+            this.loginHandler(res)
+          })
+        } else {
+          return false
+        }
       })
     },
 
@@ -112,6 +181,7 @@ export default {
           break
 
         case 6:
+          this.failHandler(res)
           break
 
         case 7:
@@ -125,11 +195,34 @@ export default {
 
         // 登录成功
         case 10:
-          const token = res.Data.token
-          const url = process.env.NODE_ENV === 'development' ? `http://${location.host}?token=${token}/#/home` : `${res.Data.redirect_url}?token=${token}`
-          window.location.href = url
+          this.successHandler(res)
           break
       }
+    },
+
+    // 获取识别码（区分开发和线上地址）
+    fetchCode () {
+      return `${process.env.NODE_ENV === 'development' ? `${this.baseUrl}/utility/vaildcode` : '/utility/vaildcode'}?t=${new Date().getTime()}`
+    },
+
+    // 登录失败处理程序
+    failHandler (res) {
+      this.$message({ type: 'error', message: res.Message })
+      const failCount = res.Data.fail_count
+      // 如果失败次数>=3，显示识别码，并记录失败次数和时间，用于刷新后判断是否显示识别码
+      if (failCount >= 3) {
+        window.localStorage.setItem('failInfo', `${new Date().getTime()}|${failCount}`)
+        this.codeVisible = true
+      }
+    },
+
+    // 登录成功处理程序
+    successHandler (res) {
+      // 登录成功后清除失败次数
+      window.localStorage.setItem('failInfo', null)
+      const token = res.Data.token
+      const url = process.env.NODE_ENV === 'development' ? `http://${location.host}?token=${token}/#/home` : `${res.Data.redirect_url}?token=${token}`
+      window.location.href = url
     }
   }
 }
@@ -202,6 +295,30 @@ export default {
       .text-btn {
         padding: 0;
       }
+    }
+    .append-layout {
+      width: 100px;
+      text-align: center;
+    }
+    .code {
+      width: 100%;
+      height: 40px;
+      vertical-align: bottom;
+      cursor: pointer;
+    }
+    .el-input-group__append, .el-input-group__prepend {
+      padding: 0;
+    }
+    .code-item .el-input-group__append {
+      border: none;
+    }
+    .code-item .el-input__inner {
+      border-right: none;
+    }
+    .el-icon-question {
+      font-size: 18px;
+      cursor: pointer;
+      padding: 10px 20px;
     }
   }
 </style>

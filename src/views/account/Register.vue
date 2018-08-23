@@ -70,13 +70,13 @@
             clearable
             placeholder="请输入识别码"
             maxlength="4">
-            <div slot="append" class="append-layout">
+            <div slot="append" class="append-layout" style="width: 102px">
               <img
                 :src="codeUrl"
                 class="code"
                 alt="识别码"
                 title="点击刷新"
-                @click="codeUrl = getCode()">
+                @click="codeUrl = fetchCode()">
             </div>
           </el-input>
         </el-form-item>
@@ -190,7 +190,7 @@ export default {
 
   created () {
     this.fetchData()
-    this.codeUrl = this.getCode()
+    this.codeUrl = this.fetchCode()
   },
 
   methods: {
@@ -275,7 +275,14 @@ export default {
           const msg = `您注册的为 <span style="color: red; font-weight: 700">${versionName}</span>，
                       如后期购买的不是 <span style="color: red; font-weight: 700">${versionName}</span>，
                       <span style="color: red; font-weight: 700">${versionName}</span> 数据将不保留！`
-          this.$refs.confirmModal.show(msg)
+          this.$refs.confirmModal.show(msg, () => {
+            this.$http({
+              url: '/account/register',
+              method: 'post',
+              data: this.$toFormData(this.formData)
+            }).then(res => {
+            })
+          })
         } else {
           return false
         }
@@ -283,7 +290,7 @@ export default {
     },
 
     // 获取识别码（区分开发和线上地址）
-    getCode () {
+    fetchCode () {
       return `${process.env.NODE_ENV === 'development' ? `${this.baseUrl}/utility/vaildcode` : '/utility/vaildcode'}?t=${new Date().getTime()}`
     },
 

@@ -6,7 +6,7 @@
     <div class="confirm-modal-content" v-html="message"></div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="hide">{{ cancelText }}</el-button>
-      <el-button type="primary" @click="confirm" :loading="loading">{{ confirmText }}</el-button>
+      <el-button type="primary" @click="confirm" :loading="loading">{{ loading ? '加载中...' : confirmText }}</el-button>
     </span>
   </el-dialog>
 </template>
