@@ -244,8 +244,8 @@ export default {
     // 获取版本列表和行业列表
     fetchData () {
       this.$http({
-        url: '/account/getInitData',
-        method: 'get'
+        url: '/account/GetRegisterData',
+        method: 'post'
       }).then(res => {
         if (res.Success) {
           this.versionList = res.Data.versionList

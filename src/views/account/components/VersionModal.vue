@@ -2,7 +2,7 @@
   <el-dialog
     title="请选择体验版本"
     :visible.sync="visible"
-    width="400px">
+    width="450px">
     <div>
       <el-row :gutter="15">
         <el-col :span="12">

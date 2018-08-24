@@ -259,8 +259,6 @@ export default {
       const token = res.Data.token
       const url = process.env.NODE_ENV === 'development' ? `http://${location.host}#/home?token=${token}` : `${res.Data.redirect_url}#/home?token=${token}`
       window.location.href = url
-      window.event.returnValue = false
-      if (window.event.preventDefault) window.event.preventDefault()
     },
 
     // 登录成功后，清除失败时间，意思就是一旦登录成功，下次就不用显示识别码了
