@@ -2,7 +2,7 @@ import axios from 'axios'
 // import App from '@/main'
 
 const baseURL = process.env.NODE_ENV === 'development' ? '/api' : ''
-const timeout = 20000
+const timeout = 60000
 
 const instance = axios.create({ baseURL, timeout })
 
