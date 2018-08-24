@@ -11,7 +11,7 @@
 
       <el-form ref="form" :model="formData" :rules="formRules" style="margin-top: 15px" size="medium">
         <el-form-item v-if="currentType === 'employee'" prop="company">
-          <el-input v-model="formData.company" clearable placeholder="请输入企业号" maxlength="11">
+          <el-input v-model="formData.company" clearable placeholder="请输入企业号">
             <div slot="append">
               <el-tooltip class="item" effect="dark" content="企业号参见“系统设置>企业资料”" placement="right">
                 <i class="el-icon-question"></i>
@@ -21,7 +21,7 @@
         </el-form-item>
 
         <el-form-item prop="username">
-          <el-input v-model="formData.username" clearable placeholder="请输入用户名" maxlength="11"></el-input>
+          <el-input v-model="formData.username" clearable placeholder="请输入用户名"></el-input>
         </el-form-item>
 
         <el-form-item prop="password">
@@ -47,10 +47,10 @@
 
         <el-form-item class="text-item">
           <div style="float: left">
-            <el-checkbox v-model="formData.remember">记住密码</el-checkbox>
+            <el-checkbox v-model="remember">记住密码</el-checkbox>
           </div>
           <div style="float: right">
-            <el-button type="text" class="text-btn">找回密码</el-button>
+            <el-button type="text" class="text-btn" @click="goReset">找回密码</el-button>
           </div>
         </el-form-item>
 
@@ -60,7 +60,7 @@
 
         <el-form-item class="text-item">
           <div style="float: left">
-            <el-button type="text" class="text-btn">演示账号</el-button>
+            <el-button type="text" class="text-btn" @click="showVersionModal">演示账号</el-button>
           </div>
           <div style="float: right">
             <span style="color: grey">没有账号？</span>
@@ -69,22 +69,26 @@
         </el-form-item>
       </el-form>
     </div>
+
+    <version-modal ref="versionModal" @select-version="selectVersion"/>
   </shared>
 </template>
 
 <script>
 import Shared from './components/Shared'
 import config from '@config'
+import VersionModal from './components/VersionModal'
 
 export default {
-  name: 'Login',
+  name: 'AccountLogin',
 
   components: {
-    Shared
+    Shared, VersionModal
   },
 
   data () {
     return {
+      remember: false,
       currentType: 'quick',
       tags: [
         { title: '快捷登录', type: 'quick' },
@@ -94,8 +98,7 @@ export default {
         company: '',
         username: '',
         password: '',
-        vaildcode: '',
-        remember: false
+        vaildcode: ''
       },
       formRules: {
         company: [
@@ -121,6 +124,7 @@ export default {
   created () {
     this.codeUrl = this.fetchCode()
     this.initCodeVisible()
+    this.initRememberInfo()
   },
 
   methods: {
@@ -134,6 +138,23 @@ export default {
       }
     },
 
+    // 获取保存在本地的账号信息
+    initRememberInfo () {
+      const rememberInfo = window.localStorage.getItem('rememberInfo')
+      if (rememberInfo) {
+        try {
+          const { type, username, password, company } = JSON.parse(rememberInfo)
+          this.currentType = type
+          this.formData.username = username
+          this.formData.password = password
+          this.formData.company = company
+          this.remember = password !== ''
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    },
+
     // 切换登录方式
     tagClick (type) {
       this.currentType = type
@@ -141,18 +162,27 @@ export default {
 
     // 跳转到注册页
     goRegister () {
-      this.$appPush({ name: 'Register' })
+      this.$appPush({ name: 'AccountRegister' })
+    },
+
+    // 跳转到找回密码页
+    goReset () {
+      this.$appPush({ name: 'AccountReset' })
     },
 
     // 登录
     login () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          const { company, ...data } = this.formData
+          if (this.currentType === 'employee') {
+            data.username = `${company}:${data.username}`
+          }
           this.loading = true
           this.$http({
             url: '/account/login',
             method: 'post',
-            data: this.formData
+            data: data
           }).then(res => {
             this.loginHandler(res)
           })
@@ -222,11 +252,43 @@ export default {
 
     // 登录成功处理程序
     successHandler (res) {
-      // 登录成功后清除失败次数
-      window.localStorage.setItem('failInfo', null)
+      // 登录成功后清除失败时间
+      this.clearFailTime()
+      // 记住账号信息
+      this.setRememberInfo()
       const token = res.Data.token
-      const url = process.env.NODE_ENV === 'development' ? `http://${location.host}?token=${token}/#/home` : `${res.Data.redirect_url}?token=${token}`
+      const url = process.env.NODE_ENV === 'development' ? `http://${location.host}#/home?token=${token}` : `${res.Data.redirect_url}#/home?token=${token}`
       window.location.href = url
+      window.event.returnValue = false
+      if (window.event.preventDefault) window.event.preventDefault()
+    },
+
+    // 登录成功后，清除失败时间，意思就是一旦登录成功，下次就不用显示识别码了
+    clearFailTime () {
+      window.localStorage.setItem('failTime', null)
+    },
+
+    // 登录成功后，账号和登录方式一定要记住，密码如果勾选了记住密码也要记住，下次打开登录页时保持上一次登录的状态
+    setRememberInfo () {
+      const data = {
+        type: this.currentType,
+        username: this.formData.username,
+        password: this.remember ? this.formData.password : '', // 是否记住密码
+        company: this.currentType === 'quick' ? '' : this.formData.company
+      }
+      window.localStorage.setItem('rememberInfo', JSON.stringify(data))
+    },
+
+    showVersionModal () {
+      this.$refs.versionModal.show()
+    },
+
+    selectVersion (version) {
+      if (version === 10) {
+        console.log('单店')
+      } else {
+        console.log('连锁')
+      }
     }
   }
 }

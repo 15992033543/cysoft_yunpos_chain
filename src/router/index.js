@@ -12,12 +12,13 @@ Vue.use(Router)
  */
 export default new Router({
   routes: [
+    { path: '', redirect: { path: '/account' } },
     // 账户
-    { path: '/account', redirect: { name: 'Login' } },
+    { path: '/account', redirect: { name: 'AccountLogin' } },
     // 登录页面
     {
       path: '/account/login',
-      name: 'Login',
+      name: 'AccountLogin',
       component: () => import('@/views/account/Login'),
       meta: {
         nocache: true, // 不缓存此页面，每次进入都需要重新加载
@@ -28,13 +29,16 @@ export default new Router({
     // 注册页面
     {
       path: '/account/register',
-      name: 'Register',
+      name: 'AccountRegister',
       component: () => import('@/views/account/Register'),
-      meta: {
-        nocache: true,
-        notag: true,
-        title: '注册'
-      }
+      meta: { nocache: true, notag: true, title: '注册' }
+    },
+    // 找回密码
+    {
+      path: '/account/reset',
+      name: 'AccountReset',
+      component: () => import('@/views/account/Reset'),
+      meta: { nocache: true, notag: true, title: '找回密码' }
     },
 
     // 错误
@@ -59,7 +63,7 @@ export default new Router({
     {
       path: '',
       component: Layout,
-      redirect: '/help',
+      name: 'Layout',
       children: [
         // ------------------------------- 主页 -------------------------------
         {

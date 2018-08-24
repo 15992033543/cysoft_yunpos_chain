@@ -126,7 +126,7 @@ import config from '@config'
 import ConfirmModal from '@/components/ConfirmModal'
 
 export default {
-  name: 'Register',
+  name: 'AccountRegister',
 
   components: {
     Shared, ClauseModal, ConfirmModal
@@ -229,7 +229,7 @@ export default {
 
     // 跳转到登录页
     goLogin () {
-      this.$appPush({ name: 'Login' })
+      this.$appPush({ name: 'AccountLogin' })
     },
 
     // 显示条款模态框

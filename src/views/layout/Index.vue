@@ -16,7 +16,6 @@ import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'
 import AppMain from './components/AppMain'
-import { getQuery } from '@/common'
 
 export default {
   name: 'Layout',
@@ -37,7 +36,8 @@ export default {
   },
 
   beforeRouteEnter (to, from, next) {
-    const token = getQuery('token')
+    const token = to.query.token
+    console.log(token)
     if (token) {
       location.href = `http://${location.host}/#/home`
     } else {

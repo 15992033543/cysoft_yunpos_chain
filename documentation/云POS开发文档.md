@@ -43,7 +43,7 @@
       * List.vue -- 列表
       * Add.vue -- 新增
 
-## 路由（重要）
+## 路由控制（重要）
 
 1、路由配置文件在src/router/index.js
 
@@ -58,21 +58,33 @@
 
     // 组件配置
     export default {
-      name: 'GoodsDataList',
+      name: 'GoodsDataList', // 与路由的name保持一致
       ...
     }
 
-3、为了灵活的控制缓存，跳转时，要使用this.$appPush()方法，并且必须使用name，不能使用path，其它参数与vue-router的push一致。比如：
+3、为了灵活的控制缓存，跳转时，要使用this.$appPush()方法，并且必须使用name作为路由的标志，不能使用path，其它参数与vue-router的push保持一致即可。比如：
 
     this.$appPush({ name: 'GoodsDataList', ... })
 
 $appPush()选项：
 
-    // 跳转时，刷新目标页
-    this.$appPush({ name: 'GoodsDataList', refresh: true })
+|   名称   |       说明      |  默认值 | 是否必传 |
+| ------- | --------------- | ------ | -------  |
+|  name   | 路由的name       |   无   |  是 |
+| refresh | 跳转时，刷新目标页 | false | 否 |
+| closeTo | 跳转时，先关闭目标页，再重新打开（不会刷新目标页，只是将目标页的标签提前到这个页面标签的后） | false | 否 |
+| closeFrom | 跳转时，关闭当前页（某些页面有返回按钮，点击返回时可将当前页关闭） | false | 否 |
+| replace | 与vue-router的replace()方法一样，将当前页从history中清除 | false | 否 |
 
-    // 跳转时，先关闭目标页，再重新打开（不会刷新目标页，只是将目标页的标签提前到这个页面标签的后）
-    this.$appPush({ name: 'GoodsDataList', closeTo: true })
+4、配置路由时，需要将模块地址redirect到当前模块的某个页面，比如account模块：
 
-    // 跳转时，关闭当前页
-    this.$appPush({ name: 'GoodsDataList', closeFrom: true })
+    // redirect到登录页
+    { path: '/account', redirect: { name: 'Login' } },
+    // 登录页面
+    {
+      path: '/account/login',
+      name: 'AccountLogin',
+      ...
+    }
+
+这样做避免了用户直接访问<http://localhost:8080/#/account>时出现404错误
