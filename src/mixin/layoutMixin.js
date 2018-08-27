@@ -34,7 +34,7 @@ const fetchInitData = () => {
       saveLocalInfo(res)
       // location.href = `http://${location.host}/#/home`
     } else {
-      return Promise.reject(res)
+      return Promise.reject(res.Data)
     }
   })
 }
