@@ -1,23 +1,25 @@
 import axios from 'axios'
-// import App from '@/main'
+import { MessageBox } from 'element-ui'
 
 const baseURL = process.env.NODE_ENV === 'development' ? '/api' : ''
 const timeout = 60000
 
 const instance = axios.create({ baseURL, timeout })
 
+let flag = false
+
 instance.interceptors.response.use(response => {
-  // App.$msgbox({
-  //   title: '温馨提示',
-  //   message: App.$createElement('p', { style: 'color: red' }, '您未登录或者登录时效已过期！请重新登录！'),
-  //   showClose: false,
-  //   confirmButtonText: '确定',
-  //   closeOnClickModal: false,
-  //   closeOnPressEscape: false,
-  //   callback: () => {
-  //     App.$router.push('/login')
-  //   }
-  // })
+  if (response.data.Data.level === 11 && !flag) {
+    flag = true
+    MessageBox.alert('<span style="color: red">您未登录或者登录时效已过期！请重新登录！</span>', '温馨提示', {
+      dangerouslyUseHTMLString: true,
+      confirmButtonText: '确定',
+      showClose: false,
+      callback: action => {
+        flag = false
+      }
+    })
+  }
   return response
 }, error => {
   return Promise.reject(error)
@@ -26,7 +28,7 @@ instance.interceptors.response.use(response => {
 // 需要登录权限的请求
 export function apiAuth (options) {
   options.headers = options.headers || {}
-  options.headers.token = ''
+  options.headers.token = window.localStorage.getItem('userApiToken')
   return instance(options).then(res => res.data)
 }
 

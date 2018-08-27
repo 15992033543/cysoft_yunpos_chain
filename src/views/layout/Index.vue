@@ -16,9 +16,12 @@ import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
 import Toolbar from './components/Toolbar'
 import AppMain from './components/AppMain'
+import layoutMixin from '@/mixin/layoutMixin'
 
 export default {
   name: 'Layout',
+
+  mixins: [ layoutMixin ],
 
   components: {
     Sidebar,
@@ -33,16 +36,6 @@ export default {
 
   beforeDestroy () {
     document.removeEventListener('keydown', this.refreshThisPage)
-  },
-
-  beforeRouteEnter (to, from, next) {
-    const token = to.query.token
-    console.log(token)
-    if (token) {
-      location.href = `http://${location.host}/#/home`
-    } else {
-      next()
-    }
   },
 
   methods: {

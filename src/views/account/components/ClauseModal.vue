@@ -122,8 +122,9 @@
       </p>
       <h4>十六、争议的解决</h4>
       <p class="section">云POS与账户任何一方未履行协议所规定的责任均视为违约，按《合同法》规定处理；如双方在此协议范围内发生纠纷，应尽量友好协商解决。此协议适用中华人民共和国法律。如与此协议有关的某一特定事项缺乏明确法律规定，则应参照通用的国际商业惯例和行业惯例。</p>
-      <p>广州市超赢信息科技有限公司</p>
-      <p>2017年01月01日</p>
+      <br />
+      <p class="copyright">广州市超赢信息科技有限公司</p>
+      <p class="copyright">2017年01月01日</p>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="disagree">不同意</el-button>
@@ -171,5 +172,9 @@ export default {
 <style scoped>
   .section {
     text-indent: 2em;
+  }
+  .copyright {
+    text-align: right;
+    color: #409EFF;
   }
 </style>

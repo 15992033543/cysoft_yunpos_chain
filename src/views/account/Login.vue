@@ -194,7 +194,7 @@ export default {
 
     // 登录处理程序
     loginHandler (res) {
-      this.loading = false
+      this.loading = res.Data.level === 10
       switch (res.Data.level) {
         // 登录错误，直接提示错误信息
         case 1:
