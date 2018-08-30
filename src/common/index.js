@@ -1,9 +1,27 @@
 import config from '../../config'
+import store from '@/store'
+import { api as http } from '@/api'
+import jsonp from 'jsonp'
 
+// 手机正则
 export const phoneReg = /^1[0-9]{10}$/
 
+// 密码正则
 export const passwordReg = /^[0-9A-Za-z_]{6,20}$/
 
+// 获取参数的类型
+const getType = arg => Object.prototype.toString.call(arg)
+
+// 判断一个参数是否为Object
+export function isObject (arg) {
+  return getType(arg).indexOf('Object') !== -1
+}
+
+export function isArray (arg) {
+  return getType(arg).indexOf('Array') !== -1
+}
+
+// 日期转换器
 export function dateFormat (fmt) {
   const o = {
     'M+': this.getMonth() + 1,
@@ -25,6 +43,7 @@ export function dateFormat (fmt) {
   return fmt
 }
 
+// 获取当月第一天
 export function getFirstDate (format = 'yyyy-MM-dd') {
   const date = new Date()
   date.setDate(1)
@@ -34,6 +53,7 @@ export function getFirstDate (format = 'yyyy-MM-dd') {
   return date.format(format)
 }
 
+// 获取当月最后一天
 export function getLastDate (format = 'yyyy-MM-dd') {
   const date = new Date()
   date.setMonth(date.getMonth() + 1)
@@ -45,45 +65,26 @@ export function getLastDate (format = 'yyyy-MM-dd') {
   return date.format(format)
 }
 
+// 获取当前日期
 export function getNowDate (format = 'yyyy-MM-dd') {
   return new Date().format(format)
 }
 
-const getType = obj => {
-  const toString = Object.prototype.toString
-  const map = {
-    '[object Boolean]': 'boolean',
-    '[object Number]': 'number',
-    '[object String]': 'string',
-    '[object Function]': 'function',
-    '[object Array]': 'array',
-    '[object Date]': 'date',
-    '[object RegExp]': 'regExp',
-    '[object Undefined]': 'undefined',
-    '[object Null]': 'null',
-    '[object Object]': 'object'
-  }
-  if (obj instanceof Element) {
-    return 'element'
-  }
-  return map[ toString.call(obj) ]
-}
-
+// 深拷贝一个对象
 export function deepClone (data) {
-  const type = getType(data)
   let obj
-  if (type === 'array') {
+  if (isArray(data)) {
     obj = []
-  } else if (type === 'object') {
+  } else if (isObject(data)) {
     obj = {}
   } else {
     return data
   }
-  if (type === 'array') {
+  if (isArray(data)) {
     for (let i = 0, len = data.length; i < len; i++) {
       obj.push(deepClone(data[i]))
     }
-  } else if (type === 'object') {
+  } else if (isObject(data)) {
     for (let key in data) {
       obj[key] = deepClone(data[key])
     }
@@ -91,6 +92,7 @@ export function deepClone (data) {
   return obj
 }
 
+// 运算处理程序
 const numHandler = function (num1, num2) {
   let n1, n2, l1, l2
   try { l1 = num1.toString().split('.')[1].length } catch (error) { l1 = 0 }
@@ -103,16 +105,19 @@ const numHandler = function (num1, num2) {
   return { n1: n1, n2: n2, l1: l1, l2: l2 }
 }
 
+// 加法运算
 export function accAdd (num1, num2) {
   const o = numHandler(num1, num2)
   return (o.n1 + o.n2) / Math.pow(10, Math.max(o.l1, o.l2))
 }
 
+// 减法运算
 export function accSub (num1, num2) {
   const o = numHandler(num1, num2)
   return (o.n1 - o.n2) / Math.pow(10, Math.max(o.l1, o.l2))
 }
 
+// 乘法运算
 export function accMul (num1, num2) {
   let n1, n2, l1, l2
   try { l1 = num1.toString().split('.')[1].length } catch (error) { l1 = 0 }
@@ -122,11 +127,13 @@ export function accMul (num1, num2) {
   return (n1 * n2) / Math.pow(10, Math.max(l1 + l2))
 }
 
+// 除法运算
 export function accDiv (num1, num2) {
   const o = numHandler(num1, num2)
   return o.n1 / o.n2
 }
 
+// 四舍五入
 export function accRound (value, num) {
   if (value === null || isNaN(value) || value.toString().trim() === '') {
     console.info('the parameter is not a number!')
@@ -163,6 +170,7 @@ export function accRound (value, num) {
   return num > 0 ? left + '.' + n1 : left
 }
 
+// 日期转星期
 export function dateToWeek (date) {
   if (!date) return ''
   let d
@@ -176,10 +184,12 @@ export function dateToWeek (date) {
   return weeks[day]
 }
 
+// 获取保存到本地的pageSize
 export function getLocalPageSize () {
   return Number(window.localStorage.getItem('pageSize')) || 10
 }
 
+// 统一的导出方法
 export function exportFile (url, data) {
   const exportUrl = process.env.NODE_ENV === 'development' ? `${config.dev.proxyTable['/api'].target}${url}` : url
   const app = document.getElementById('app')
@@ -188,18 +198,26 @@ export function exportFile (url, data) {
   form.setAttribute('method', 'POST')
   form.setAttribute('target', '_blank')
   const keys = Object.keys(data)
-  keys.forEach(e => {
+  const length = keys.length
+  for (let i = 0; i <= length; i++) {
     const input = document.createElement('input')
     input.setAttribute('type', 'hidden')
-    input.setAttribute('name', e)
-    input.setAttribute('value', data[e])
+    if (i !== length) {
+      const key = keys[i]
+      input.setAttribute('name', key)
+      input.setAttribute('value', data[key])
+    } else {
+      input.setAttribute('name', 'token')
+      input.setAttribute('value', store.state.user.token)
+    }
     form.appendChild(input)
-  })
+  }
   app.appendChild(form)
   form.submit()
   app.removeChild(form)
 }
 
+// 递归处理器
 const recursionDataTrans = (o, k) => {
   const arr = []
   const data = o[k]
@@ -213,6 +231,7 @@ const recursionDataTrans = (o, k) => {
   return arr
 }
 
+// 递归数据处理程序
 export function recursionDataHandler (data, topLevel = '#') {
   if (!Array.isArray(data)) return null
   const o = {}
@@ -226,6 +245,7 @@ export function recursionDataHandler (data, topLevel = '#') {
   return recursionDataTrans(o, topLevel)
 }
 
+// \/Date(1531670400000)\/日期格式转换器
 export function dateTransformer (value, format = 'yyyy-MM-dd') {
   if (!value) return ''
   const reg = /[^\d-]*/g
@@ -233,21 +253,47 @@ export function dateTransformer (value, format = 'yyyy-MM-dd') {
   return new Date(date).format(format)
 }
 
-export function getQuery (name) {
-  const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`)
-  const r = window.location.search.substr(1).match(reg)
-  return r ? unescape(r[2]) : null
-}
-
+// data转FormData
 export function toFormData (data) {
-  if (Object.prototype.toString.call(data).indexOf('Object') === -1) {
+  if (!isObject(data)) {
     console.info('the parameter is not a object!')
     return null
   }
   const fd = new FormData()
   const keys = Object.keys(data)
-  keys.forEach(e => {
-    fd.append(e, data[e])
+  keys.forEach(k => {
+    fd.append(k, data[k])
   })
   return fd
+}
+
+// 批量设置state的值
+export function batchSetState (state, data) {
+  if (!isObject(data)) {
+    console.info('the parameter is not a object!')
+    return
+  }
+  const keys = Object.keys(data)
+  keys.forEach(k => {
+    if (data[k] !== null || data[k] !== undefined) {
+      state[k] = data[k]
+    }
+  })
+}
+
+// 注销
+export function logout () {
+  http({
+    url: '/account/logout',
+    method: 'post'
+  }).then(res => {
+    if (res.Success) {
+      jsonp('http://192.168.1.140:8012/Account/Logout')
+      store.commit('clearUser')
+      store.commit('clearTag')
+      store.commit('clearKeepAlive')
+      const url = process.env.NODE_ENV === 'development' ? `${location.origin}` : `${res.Data.redirect_url}`
+      window.location.href = url
+    }
+  })
 }

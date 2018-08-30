@@ -34,6 +34,10 @@ export default {
       width: 450px;
       margin: 0 auto;
       margin-bottom: 30px;
+
+      img {
+        width: 100%;
+      }
     }
   }
 </style>

@@ -18,6 +18,10 @@ const keepAlive = {
 
     setAlivePages (state, alivePages) {
       state.alivePages = alivePages
+    },
+
+    clearKeepAlive (state) {
+      state.alivePages = []
     }
   }
 }

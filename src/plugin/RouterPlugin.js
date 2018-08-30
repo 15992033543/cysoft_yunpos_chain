@@ -1,4 +1,7 @@
 import config from '../config'
+import store from '@/store'
+import { MessageBox } from 'element-ui'
+import { logout } from '@/common'
 
 const baseTitle = config.baseTitle
 const maxTagCount = config.maxTagCount - 1
@@ -21,6 +24,8 @@ const deleteTag = (vm, name) => {
 const deleteAlive = (vm, name) => {
   vm.$store.commit('delAlivePages', name)
 }
+
+const isBelongToLayout = to => to.matched[0].name === 'Layout'
 
 const limitTag = vm => {
   const tagPages = vm.$store.state.tag.tagPages
@@ -46,23 +51,57 @@ const titleMixin = {
 
 const permissionMixin = {
   beforeRouteEnter (to, from, next) {
+    const permissionList = store.state.permissionList.data || []
     const permission = to.meta && to.meta.permission
-    permission ? next({ name: '401' }) : next()
+    if (isBelongToLayout(to) && permission) {
+      // permissionList.indexOf(permission) === -1 ? next({ name: '401' }) : next()
+      if (permissionList.indexOf(permission) === -1) {
+        MessageBox.alert('<span style="color: red">抱歉！您没有权限进行以下操作，如有疑问请联系客服！</span>', '温馨提示', {
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '确定',
+          showClose: false
+        })
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
   }
 }
 
 const tagMixin = {
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      addAlive(vm, to)
-      addTag(vm, to, from)
-      limitTag(vm)
+      if (isBelongToLayout(to)) {
+        addAlive(vm, to)
+        addTag(vm, to, from)
+        limitTag(vm)
+      }
     })
+  }
+}
+
+const redirectMixin = {
+  beforeRouteEnter (to, from, next) {
+    const token = store.state.user.token
+    if (to.name === 'AccountLogin') {
+      token ? next({ name: 'Home' }) : next()
+    } else if (isBelongToLayout(to) && !token) {
+      if (to.name === 'Home' && to.query.token) {
+        next()
+      } else {
+        logout()
+      }
+    } else {
+      next()
+    }
   }
 }
 
 const AppPlugin = {
   install (Vue) {
+    Vue.mixin(redirectMixin)
     Vue.mixin(permissionMixin)
     Vue.mixin(titleMixin)
     Vue.mixin(tagMixin)
@@ -70,7 +109,7 @@ const AppPlugin = {
     Vue.prototype.$appPush = function (options = {}) {
       const name = options.name
       if (!name) {
-        throw new Error('$appPush()方法必须传name，否则不能跳转！请查看开发文档')
+        throw new Error('先确定后台返回的菜单列表与权限列表是否对应，如果对应，到router中配置permission，并保持router的name与组件的name一致')
       }
       options.path && delete options.path
       const closeFrom = options.closeFrom || false

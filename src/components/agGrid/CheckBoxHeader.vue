@@ -21,7 +21,6 @@ export default Vue.extend({
 
   methods: {
     setChecked (checked) {
-      console.log(checked)
       this.checked = checked
     },
 

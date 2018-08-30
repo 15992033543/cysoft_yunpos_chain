@@ -54,6 +54,15 @@ const tag = {
       const { name, meta, params, query } = route
       state.active = { name, meta, params, query }
       updateActive(state.active)
+    },
+
+    clearTag (state) {
+      const tagPages = []
+      const active = { name: 'Home' }
+      state.tagPages = tagPages
+      state.active = active
+      updateTagPages(tagPages)
+      updateActive(active)
     }
   }
 }

@@ -2,7 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import Router from 'vue-router'
+import routes from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import RouterPlugin from './plugin/RouterPlugin'
@@ -19,10 +20,13 @@ import 'babel-polyfill' // 兼容ie
 
 Vue.config.productionTip = false
 
+Vue.use(Router)
 Vue.use(ElementUI, { size: 'small' })
 Vue.use(RouterPlugin)
 Vue.use(ApiPlugin)
 Vue.use(AppPlugin)
+
+const router = new Router({ routes })
 
 /* eslint-disable no-new */
 export default new Vue({

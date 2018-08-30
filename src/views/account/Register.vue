@@ -1,6 +1,6 @@
 <template>
   <shared>
-    <div class="register">
+    <el-card class="register">
       <el-form ref="form" :model="formData" :rules="formRules" size="medium">
         <el-form-item label="版本" :label-width="labelWidth" prop="version">
           <el-select
@@ -112,7 +112,7 @@
           </div>
         </el-form-item>
       </el-form>
-    </div>
+    </el-card>
 
     <clause-modal ref="clauseModal"/>
     <confirm-modal ref="confirmModal" cancelText="取消注册" confirmText="确认注册"/>
@@ -360,7 +360,6 @@ export default {
     width: 380px;
     margin: 0 auto;
     background-color: white;
-    padding: 20px;
 
     .el-form-item__label, .el-input .el-input__inner {
       height: 40px;

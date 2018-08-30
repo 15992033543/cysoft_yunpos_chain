@@ -2,7 +2,10 @@
   <div class="toolbar-container">
     <span class="help" @click="$appPush({ name: 'Help' })">新手引导</span>
 
-    <div class="time">到期时间：剩<span class="count">230</span>天</div>
+    <div class="time">
+      到期时间：<span v-if="dateDue">剩<span class="count">{{ dateDue }}</span>天</span>
+      <span v-else class="count">永久使用</span>
+    </div>
     <el-button type="text">购买</el-button>
     <el-tooltip effect="light" placement="bottom" popper-class="tooltip-popper">
       <span class="service">
@@ -10,8 +13,9 @@
         <img src="../../../assets/img/service.png">
       </span>
       <div slot="content" class="service-content single-line-ellipsis">
-        <p>客服电话：020-38480870转811</p>
-        <p>客服QQ：<a>1067202601</a></p>
+        <p v-if="tel">客服电话：{{ tel }}</p>
+        <p v-if="qq">客服QQ：<a :href="`http://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=${qq}`" target="_blank">{{ qq }}</a></p>
+        <p v-if="email">邮箱：{{ email }}</p>
       </div>
     </el-tooltip>
 
@@ -30,7 +34,7 @@
       <img src="../../../assets/img/user.png">
       <div slot="content" class="service-content single-line-ellipsis">
         <ul class="drop-list">
-          <li>店长 13500000006</li>
+          <li>{{ name }}</li>
           <li>修改密码</li>
           <li>购买记录</li>
           <li @click="logout">退出</li>
@@ -41,8 +45,21 @@
 </template>
 
 <script>
+import { logout } from '@/common'
+
 export default {
   name: 'Toolbar',
+
+  data () {
+    const userInfo = this.$store.state.user
+    return {
+      tel: userInfo.customerService.tel,
+      qq: userInfo.customerService.qq,
+      email: userInfo.customerService.email,
+      dateDue: userInfo.dateDue,
+      name: userInfo.name
+    }
+  },
 
   methods: {
     refresh () {
@@ -75,6 +92,7 @@ export default {
     },
 
     logout () {
+      logout()
     }
   }
 }

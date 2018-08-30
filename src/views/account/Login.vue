@@ -1,6 +1,6 @@
 <template>
   <shared>
-    <div class="login">
+    <el-card class="login">
       <ul class="tag-container">
         <li
           v-for="(item, index) in tags"
@@ -25,7 +25,7 @@
         </el-form-item>
 
         <el-form-item prop="password">
-          <el-input v-model="formData.password" clearable placeholder="请输入密码" type="password" maxlength="20"></el-input>
+          <el-input v-model="formData.password" clearable placeholder="请输入密码" type="password" maxlength="20" @keyup.enter.native="login"></el-input>
         </el-form-item>
 
         <el-form-item prop="vaildcode" class="code-item" v-if="codeVisible">
@@ -68,7 +68,7 @@
           </div>
         </el-form-item>
       </el-form>
-    </div>
+    </el-card>
 
     <version-modal ref="versionModal" @select-version="selectVersion"/>
   </shared>
@@ -185,6 +185,8 @@ export default {
             data: data
           }).then(res => {
             this.loginHandler(res)
+          }).catch(() => {
+            this.loading = false
           })
         } else {
           return false
@@ -194,8 +196,8 @@ export default {
 
     // 登录处理程序
     loginHandler (res) {
-      this.loading = res.Data.level === 10
-      switch (res.Data.level) {
+      this.loading = res.Level === 10
+      switch (res.Level) {
         // 登录错误，直接提示错误信息
         case 1:
           this.$message({ type: 'error', message: res.Message })
@@ -257,7 +259,7 @@ export default {
       // 记住账号信息
       this.setRememberInfo()
       const token = res.Data.token
-      const url = process.env.NODE_ENV === 'development' ? `http://${location.host}#/home?token=${token}` : `${res.Data.redirect_url}#/home?token=${token}`
+      const url = process.env.NODE_ENV === 'development' ? `${location.origin}#/home?token=${token}` : `${res.Data.redirect_url}#/home?token=${token}`
       window.location.href = url
     },
 
@@ -297,7 +299,6 @@ export default {
     width: 380px;
     margin: 0 auto;
     background-color: white;
-    padding: 20px;
 
     .tag-container {
       width: 100%;

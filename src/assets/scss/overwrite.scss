@@ -88,6 +88,10 @@
   margin-left: 0;
 }
 
+.el-loading-mask.is-fullscreen {
+  z-index: 4000 !important;
+}
+
 // 重写ag-grid样式
 $border-color: #dcdfe6;
 // $cell-heigit: 40px;

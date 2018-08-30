@@ -1,6 +1,6 @@
 <template>
   <shared>
-    <div class="reset">
+    <el-card class="reset">
       <el-form ref="form" :model="formData" :rules="formRules" size="medium">
         <el-form-item label="手机号" :label-width="labelWidth" prop="phone">
           <el-input
@@ -70,7 +70,7 @@
           <el-button type="text" class="text-btn" @click="goLogin">返回登录</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </el-card>
   </shared>
 </template>
 
@@ -243,7 +243,6 @@ export default {
     width: 380px;
     margin: 0 auto;
     background-color: white;
-    padding: 20px;
 
     .el-form-item__label, .el-input .el-input__inner {
       height: 40px;

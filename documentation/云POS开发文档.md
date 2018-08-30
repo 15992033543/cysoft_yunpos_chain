@@ -27,7 +27,7 @@
     * index.js -- 项目的全局方法
   * components -- 通用组件
   * config -- 项目配置
-  * menu -- 菜单配置
+  * mixin -- 混入
   * plugin -- 插件
   * router -- 路由
   * store -- 状态管理
@@ -88,3 +88,24 @@ $appPush()选项：
     }
 
 这样做避免了用户直接访问<http://localhost:8080/#/account>时出现404错误
+
+5、Layout下的路由meta的属性如下：
+
+|   名称   |       说明      |  默认值 |
+| ------- | --------------- | ------ |
+|  title | 显示在浏览器标签上的标题，以云pos - xxx的格式出现 | 无 |
+|  notag | 为ture时，表示不将此页面添加到标签页中 | false |
+|  nocache | 为ture时，表示永远不缓存此路由 | false |
+|  permission | 路由权限，因为需要与服务器返回的菜单匹配，所以此项是必须的，否则不能打开页面 | 无 |
+
+6、关于路由的permission权限，如果某个页面不需要权限，则不用配置。如果某个页面是菜单级别的，必须配置权限，否则不能打开菜单，因为菜单是后台动态返回的，为了让路由与菜单匹配，采用了路由权限与菜单的controller/action进行匹配
+
+## 权限列表
+
+* 应用中心 - valadded/list
+* 基础资料
+  * 商品资料
+    * 列表 - shopsp/list
+    * 新增 - shopsp/add
+  * 商品单位
+    * 列表 - dw/list
