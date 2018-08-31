@@ -104,14 +104,29 @@ const getUserInfo = data => {
   }
 }
 
+const getSysOption = data => {
+  const digit = data.digitHashtable
+  return {
+    clientUrl: data.urlSoftDown,
+    serviceUrl: data.urlBuyService,
+    priceNum: digit.dj_digit,
+    moneyNum: digit.je_digit,
+    amountNum: digit.sl_digit,
+    rebateNum: digit.zk_digit,
+    noticeId: data.idNotice
+  }
+}
+
 // 将主要信息保存至store
 const saveStore = data => {
   const menuList = menuHandler(data.listMenu)
   const permissionList = data.listPermission
   const userInfo = getUserInfo(data)
+  const sysOption = getSysOption(data)
   store.commit('setMenuList', menuList)
   store.commit('setPermissionList', permissionList)
   store.commit('setUser', userInfo)
+  store.commit('setSysOption', sysOption)
 }
 
 // 根据密钥获取真正的token
@@ -154,7 +169,7 @@ const fetchInitData = () => {
 const layoutMixin = {
   beforeRouteEnter (to, from, next) {
     const token = to.query.token
-    // 如果没有密钥，直接进入系统首页
+    // 如果没有密钥，直接进入
     if (!token) {
       next()
     } else { // 有密钥，用密钥去获取真正的token，实现单点登录

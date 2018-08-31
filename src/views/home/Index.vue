@@ -134,9 +134,6 @@ export default {
     }
   },
 
-  created () {
-  },
-
   mounted () {
     this.initChart()
   },

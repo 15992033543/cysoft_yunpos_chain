@@ -34,7 +34,7 @@
       </ul>
     </div>
 
-    <a class="client-download" href="http://yun.pos.cn/download.html" target="_blank" title="收银端下载">
+    <a class="client-download" :href="$store.state.sysOption.clientUrl" target="_blank" title="收银端下载">
       <img :src="downloadImg">
       <span>收银端下载</span>
     </a>

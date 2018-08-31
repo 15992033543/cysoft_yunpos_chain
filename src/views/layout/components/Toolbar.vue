@@ -6,7 +6,7 @@
       到期时间：<span v-if="dateDue">剩<span class="count">{{ dateDue }}</span>天</span>
       <span v-else class="count">永久使用</span>
     </div>
-    <el-button type="text">购买</el-button>
+    <el-button type="text" @click="buyService">购买</el-button>
     <el-tooltip effect="light" placement="bottom" popper-class="tooltip-popper">
       <span class="service">
         专属客服
@@ -93,6 +93,10 @@ export default {
 
     logout () {
       logout()
+    },
+
+    buyService () {
+      window.open(this.$store.state.sysOption.serviceUrl)
     }
   }
 }
