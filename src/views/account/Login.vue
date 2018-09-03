@@ -71,6 +71,7 @@
     </el-card>
 
     <version-modal ref="versionModal" @select-version="selectVersion"/>
+    <register-version-modal ref="registerVersionModal" @register-version="registerVersion"/>
   </shared>
 </template>
 
@@ -78,12 +79,13 @@
 import Shared from './components/Shared'
 import config from '@config'
 import VersionModal from './components/VersionModal'
+import RegisterVersionModal from './components/RegisterVersionModal'
 
 export default {
   name: 'AccountLogin',
 
   components: {
-    Shared, VersionModal
+    Shared, VersionModal, RegisterVersionModal
   },
 
   data () {
@@ -98,7 +100,8 @@ export default {
         company: '',
         username: '',
         password: '',
-        vaildcode: ''
+        vaildcode: '',
+        version: ''
       },
       formRules: {
         company: [
@@ -203,8 +206,9 @@ export default {
           this.$message({ type: 'error', message: res.Message })
           break
 
-        // 选择版本弹框
+        // 弹出选择版本弹框
         case 2:
+          this.$refs.registerVersionModal.show()
           break
 
         case 3:
@@ -279,16 +283,24 @@ export default {
       window.localStorage.setItem('rememberInfo', JSON.stringify(data))
     },
 
+    // 显示演示账号选择版本模态框
     showVersionModal () {
       this.$refs.versionModal.show()
     },
 
+    // 演示账号选择版本
     selectVersion (version) {
       if (version === 10) {
         console.log('单店')
       } else {
         console.log('连锁')
       }
+    },
+
+    // 选择注册版本，给version赋值，再次调用登录接口
+    registerVersion (version) {
+      this.formData.version = version
+      this.login()
     }
   }
 }

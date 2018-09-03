@@ -134,18 +134,31 @@ export default {
     }
   },
 
+  created () {
+    this.initRedirect()
+  },
+
   mounted () {
     this.initChart()
   },
 
   methods: {
-    tagClick () {
-      console.log('ddd')
+    // 如果有通知，弹出通知弹框，没有通知，跳到新手引导页面
+    initRedirect () {
+      const noticeId = this.$store.state.sysOption.noticeId
+      const noticeFlag = window.sessionStorage.getItem('noticeFlag')
+      if (!noticeFlag) {
+        if (noticeId) {
+          console.log('有通知')
+        } else {
+          this.$appPush({ name: 'Help' })
+        }
+        window.sessionStorage.setItem('noticeFlag', 1)
+      }
     },
 
-    dateChange (begin, end) {
-      this.beginDate = begin
-      this.endDate = end
+    tagClick () {
+      console.log('ddd')
     },
 
     submit () {
