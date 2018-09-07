@@ -149,16 +149,101 @@
       </div>
 
       <div class="table-container" v-loading="tLoading">
-        <app-table :data="tableData">
+        <el-table
+          :data="tableData"
+          border
+          height="505px"
+          style="width: 100%">
           <el-table-column
             prop="row_no"
             label="序号"
-            width="60"/>
+            width="60">
+          </el-table-column>
+
           <el-table-column
-            prop="row_no"
-            label="序号"
-            width="60"/>
-        </app-table>
+            prop="barcode"
+            label="商品条码"
+            width="150">
+          </el-table-column>
+
+          <el-table-column
+            prop="bm"
+            label="商品编码"
+            width="150">
+          </el-table-column>
+
+          <el-table-column
+            prop="mc"
+            label="商品名称"
+            width="150">
+          </el-table-column>
+
+          <el-table-column
+            prop="spfl_mc"
+            label="商品分类"
+            width="150">
+          </el-table-column>
+
+          <el-table-column
+            prop="spfl_mc"
+            label="商品分类"
+            width="150">
+          </el-table-column>
+
+          <el-table-column
+            prop="dw"
+            label="单位"
+            width="60">
+          </el-table-column>
+
+          <el-table-column
+            prop="dj_ls"
+            label="零售价"
+            width="100">
+          </el-table-column>
+
+          <el-table-column
+            prop="dj_jh"
+            label="进货价"
+            width="100">
+          </el-table-column>
+
+          <el-table-column
+            prop="dj_hy"
+            label="会员价"
+            width="100">
+          </el-table-column>
+
+          <el-table-column
+            prop="dj_pf"
+            label="批发价"
+            width="100">
+          </el-table-column>
+
+          <el-table-column
+            prop="dj_ps"
+            label="配送价"
+            width="100">
+          </el-table-column>
+
+          <el-table-column
+            prop="gg"
+            label="规格"
+            width="100">
+          </el-table-column>
+
+          <el-table-column
+            prop="flag_state"
+            label="状态"
+            width="100">
+          </el-table-column>
+
+          <el-table-column
+            prop="op"
+            label="操作"
+            width="150">
+          </el-table-column>
+        </el-table>
       </div>
     </div>
 
@@ -181,7 +266,6 @@
 import AppPagination from '@/components/AppPagination'
 import TerminalModal from './components/TerminalModal'
 import ConfirmModal from '@/components/ConfirmModal'
-import AppTable from '@/components/AppTable'
 
 export default {
   name: 'GoodsDataList',
@@ -189,8 +273,7 @@ export default {
   components: {
     AppPagination,
     TerminalModal,
-    ConfirmModal,
-    AppTable
+    ConfirmModal
   },
 
   data () {
