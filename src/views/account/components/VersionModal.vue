@@ -35,8 +35,13 @@ export default {
       this.visible = true
     },
 
+    hide () {
+      this.visible = false
+    },
+
     selectVersion (version) {
       this.$emit('select-version', version)
+      this.hide()
     }
   }
 }

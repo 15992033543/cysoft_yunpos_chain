@@ -104,6 +104,7 @@ const getUserInfo = data => {
   }
 }
 
+// 获取系统选项
 const getSysOption = data => {
   const digit = data.digitHashtable
   return {

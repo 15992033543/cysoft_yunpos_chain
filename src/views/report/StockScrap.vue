@@ -49,7 +49,7 @@
 
       <!-- 明细报表 -->
       <div v-show="tagSelected === 'detail'">
-        <app-table
+        <ag-grid-table
           ref="detailEl"
           token="detailEl"
           :column-defs="detailColumnDefs"
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import DateRangePicker from '@/components/DateRangePicker'
 import AppPagination from '@/components/AppPagination'
 
@@ -70,7 +70,7 @@ export default {
   name: 'StockScrap',
 
   components: {
-    AppTable, DateRangePicker, AppPagination
+    AgGridTable, DateRangePicker, AppPagination
   },
 
   data () {

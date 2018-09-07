@@ -101,7 +101,8 @@ export default {
         username: '',
         password: '',
         vaildcode: '',
-        version: ''
+        version: '',
+        yanshi: false
       },
       formRules: {
         company: [
@@ -131,12 +132,12 @@ export default {
   },
 
   methods: {
-    // 如果登录3次失败后，时间已经过了3分钟，那么不再显示识别码输入框
+    // 如果登录3次失败后，时间已经过了60分钟，那么不再显示识别码输入框
     initCodeVisible () {
       const failTime = window.localStorage.getItem('failTime')
       if (failTime) {
         const time = new Date().getTime() - Number(failTime)
-        const duration = 60 * 3 * 1000 // 3分钟
+        const duration = 60 * 60 * 1000 // 60分钟
         this.codeVisible = time < duration
       }
     },
@@ -177,23 +178,35 @@ export default {
     login () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          const { company, ...data } = this.formData
-          if (this.currentType === 'employee') {
-            data.username = `${company}:${data.username}`
-          }
-          this.loading = true
-          this.$http({
-            url: '/account/login',
-            method: 'post',
-            data: data
-          }).then(res => {
-            this.loginHandler(res)
-          }).catch(() => {
-            this.loading = false
-          })
+          this.formData.yanshi = false
+          this.loginRequest()
         } else {
           return false
         }
+      })
+    },
+
+    // 演示账号登录
+    demoLogin () {
+      this.formData.yanshi = true
+      this.loginRequest()
+    },
+
+    // 登录请求
+    loginRequest () {
+      const { company, ...data } = this.formData
+      if (this.currentType === 'employee') {
+        data.username = `${company}:${data.username}`
+      }
+      this.loading = true
+      this.$http({
+        url: '/account/login',
+        method: 'post',
+        data: data
+      }).then(res => {
+        this.loginHandler(res)
+      }).catch(() => {
+        this.loading = false
       })
     },
 
@@ -203,7 +216,7 @@ export default {
       switch (res.Level) {
         // 登录错误，直接提示错误信息
         case 1:
-          this.$message({ type: 'error', message: res.Message })
+          this.$message({ type: 'error', message: res.Message.toString() })
           break
 
         // 弹出选择版本弹框
@@ -211,26 +224,46 @@ export default {
           this.$refs.registerVersionModal.show()
           break
 
+        // 服务器错误，直接提示错误信息
         case 3:
+          this.$message({ type: 'error', message: res.Message.toString() })
           break
 
+        // 服务门店超过了总门店数，弹框让用户选择要留下的门店，选择完之后才能登录
         case 4:
           break
 
+        // 服务已过期，弹框提示已过期，并给出购买地址
         case 5:
+          this.$confirm(`<span style="color: red">${res.Message}</span>`, '温馨提示', {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: '购买服务',
+            cancelButtonText: '放弃购买'
+          }).then(() => {
+            window.open(res.Data.buy_url)
+          })
           break
 
+        // 登录失败，记录失败次数，大于等于3次后显示识别码
         case 6:
           this.failHandler(res)
           break
 
+        // 服务即将过期，弹框提醒用户购买，但可以点击稍后购买进入首页
         case 7:
-          break
-
-        case 8:
-          break
-
-        case 9:
+          this.$confirm(`<span style="color: red">${res.Message}</span>`, '温馨提示', {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: '购买服务',
+            cancelButtonText: '稍后购买服务',
+            distinguishCancelAndClose: true
+          }).then(() => {
+            window.open(res.Data.buy_url)
+          }).catch(action => {
+            // 稍后购买服务，直接跳转到首页
+            if (action === 'cancel') {
+              this.successHandler(res)
+            }
+          })
           break
 
         // 登录成功
@@ -247,7 +280,7 @@ export default {
 
     // 登录失败处理程序
     failHandler (res) {
-      this.$message({ type: 'error', message: res.Message })
+      this.$message({ type: 'error', message: res.Message.toString() })
       const failCount = res.Data.fail_count
       // 如果失败次数>=3，显示识别码，并记录失败次数和时间，用于刷新后判断是否显示识别码
       if (failCount >= 3) {
@@ -288,13 +321,16 @@ export default {
       this.$refs.versionModal.show()
     },
 
-    // 演示账号选择版本
+    // 演示账号选择版本（账号密码直接写死）
     selectVersion (version) {
-      if (version === 10) {
-        console.log('单店')
-      } else {
-        console.log('连锁')
+      if (version === 10) { // 单店
+        this.formData.username = '13533285171'
+        this.formData.password = 'cysoft'
+      } else { // 连锁
+        this.formData.username = '13360019127'
+        this.formData.password = '123456'
       }
+      this.demoLogin()
     },
 
     // 选择注册版本，给version赋值，再次调用登录接口

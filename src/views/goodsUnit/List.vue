@@ -20,7 +20,7 @@
       </div>
     </el-form>
 
-    <app-table
+    <ag-grid-table
       :column-defs="columnDefs"
       :row-data="tableData"
       :loading="loading"
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import OperationCell from '@/components/agGrid/OperationCell'
 import AppPagination from '@/components/AppPagination'
 import AddModal from './components/AddModal'
@@ -48,7 +48,7 @@ export default {
   name: 'GoodsUnitList',
 
   components: {
-    AppTable, AppPagination, AddModal
+    AgGridTable, AppPagination, AddModal
   },
 
   data () {

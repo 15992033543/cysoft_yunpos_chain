@@ -57,7 +57,7 @@
             </el-form-item>
           </el-form>
 
-          <app-table
+          <ag-grid-table
             ref="tableEl"
             :column-defs="columnDefs"
             :row-data="tableData"
@@ -96,7 +96,7 @@
 
 <script>
 import DatePicker from '@/components/DatePicker'
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import CheckBoxHeader from '@/components/agGrid/CheckBoxHeader'
 import CheckBoxCell from '@/components/agGrid/CheckBoxCell'
 import DelectIndexCell from '@/components/agGrid/DelectIndexCell'
@@ -108,7 +108,7 @@ import SelectCell from '@/components/agGrid/SelectCell'
 export default {
   components: {
     DatePicker,
-    AppTable,
+    AgGridTable,
     GoodsModal
   },
 

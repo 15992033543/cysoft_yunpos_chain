@@ -149,16 +149,12 @@
       </div>
 
       <div class="table-container" v-loading="tLoading">
-        <app-table :data="tableData">
-          <el-table-column
-            prop="row_no"
-            label="序号"
-            width="60"/>
-          <el-table-column
-            prop="row_no"
-            label="序号"
-            width="60"/>
-        </app-table>
+        <ag-grid-table
+          ref="goodsList"
+          :column-defs="columnDefs"
+          :row-data="tableData"
+          :grid-ready="tableReady"
+          @columns-ready="columns => columnDefs = columns"/>
       </div>
     </div>
 
@@ -178,19 +174,23 @@
 </template>
 
 <script>
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import AppPagination from '@/components/AppPagination'
+import CheckBoxHeader from '@/components/agGrid/CheckBoxHeader'
+import CheckBoxCell from '@/components/agGrid/CheckBoxCell'
+import OperationCell from '@/components/agGrid/OperationCell'
 import TerminalModal from './components/TerminalModal'
 import ConfirmModal from '@/components/ConfirmModal'
-import AppTable from '@/components/AppTable'
+import SortHeader from '@/components/agGrid/SortHeader'
 
 export default {
   name: 'GoodsDataList',
 
   components: {
+    AgGridTable,
     AppPagination,
     TerminalModal,
-    ConfirmModal,
-    AppTable
+    ConfirmModal
   },
 
   data () {
@@ -218,6 +218,153 @@ export default {
       treeProps: {
         label: 'name'
       },
+      sortHeaderComponents: [],
+      allCheckedComponent: null,
+      columnDefs: [
+        {
+          field: 'checked',
+          width: 40,
+          suppressSizeToFit: true,
+          headerComponentFramework: CheckBoxHeader,
+          cellRendererFramework: CheckBoxCell,
+          headerComponentParams: {
+            changeCallback: this.selectAll,
+            ready: vue => {
+              this.allCheckedComponent = vue
+            }
+          },
+          cellRendererParams: {
+            changeCallback: this.selectSingle
+          }
+        },
+        {
+          headerName: '序号',
+          field: 'row_no',
+          width: 40,
+          suppressSizeToFit: true,
+          cellRendererParams: {
+            filter: p => (p.node.rowIndex + 1) + this.formData.page * this.formData.pageSize
+          }
+        },
+        {
+          headerName: '商品条码',
+          field: 'barcode',
+          width: 100,
+          suppressSizeToFit: true,
+          headerComponentFramework: SortHeader,
+          headerComponentParams: {
+            sort: this.sort,
+            ready: vue => { // ready返回组件实例
+              this.pushSortHeader(vue)
+            }
+          }
+        },
+        {
+          headerName: '商品编码',
+          field: 'bm',
+          width: 100,
+          suppressSizeToFit: true,
+          headerComponentFramework: SortHeader,
+          headerComponentParams: {
+            sort: this.sort,
+            ready: vue => {
+              this.pushSortHeader(vue)
+            }
+          }
+        },
+        {
+          headerName: '商品名称',
+          field: 'mc',
+          width: 150,
+          suppressSizeToFit: true,
+          headerComponentFramework: SortHeader,
+          headerComponentParams: {
+            sort: this.sort,
+            ready: vue => {
+              this.pushSortHeader(vue)
+            }
+          }
+        },
+        { headerName: '商品分类', field: 'spfl_mc', width: 100 },
+        { headerName: '单位', field: 'dw', width: 50 },
+        {
+          headerName: '零售价',
+          field: 'dj_ls',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, priceNum)
+          }
+        },
+        {
+          headerName: '进货价',
+          field: 'dj_jh',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, priceNum)
+          }
+        },
+        {
+          headerName: '会员价',
+          field: 'dj_hy',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, priceNum)
+          }
+        },
+        {
+          headerName: '批发价',
+          field: 'dj_pf',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, priceNum)
+          }
+        },
+        {
+          headerName: '配送价',
+          field: 'dj_ps',
+          width: 80,
+          cellRendererParams: {
+            cellClass: 'text-align-right',
+            filter: p => this.$accRound(p.value, priceNum)
+          }
+        },
+        { headerName: '规格', field: 'gg', width: 90 },
+        {
+          headerName: '状态',
+          field: 'flag_state',
+          width: 60,
+          cellRendererParams: {
+            cellClass: p => {
+              return p.value === 1 ? 'verify-text-color' : 'no-verify-text-color'
+            },
+            filter: p => {
+              return p.value === 1 ? '正常' : '停用'
+            }
+          }
+        },
+        {
+          headerName: '操作',
+          field: 'op',
+          width: 120,
+          suppressSizeToFit: true,
+          lockPinned: true,
+          pinned: 'right',
+          suppressResize: true,
+          suppressMovable: true,
+          cellRendererFramework: OperationCell, // 操作拦组件
+          cellRendererParams: {
+            btns: [ // 操作栏按钮
+              { btnClass: 'fa fa-copy', btnName: '复制', callback: this.copy },
+              { btnClass: 'fa fa-pencil', btnName: '编辑', callback: this.edit },
+              { btnClass: 'fa fa-trash', btnName: '删除', callback: this.del }
+            ]
+          }
+        }
+      ],
       tableData: [],
       tLoading: false,
       total: 0,
@@ -236,7 +383,6 @@ export default {
   created () {
     this.fetchSupplierList()
     this.fetchBrandList()
-    this.fetchClassificationList()
   },
 
   methods: {
@@ -293,6 +439,12 @@ export default {
       // })
     },
 
+    // table初始化完成回调
+    tableReady () {
+      // 在这里获取分类是为了让table也处于loading状态
+      this.fetchClassificationList()
+    },
+
     // 多选
     selectAll (checked) {
       this.tableData.forEach(e => {
@@ -303,6 +455,7 @@ export default {
     // 单选
     selectSingle (index, checked) {
       this.tableData[index].checked = checked
+      this.allCheckedComponent.setChecked(this.tableData.every(e => e.checked))
     },
 
     // 新增

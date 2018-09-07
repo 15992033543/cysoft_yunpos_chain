@@ -5,7 +5,7 @@
       :visible.sync="visible"
       custom-class="goods-modal-custom">
       <div class="modal-content">
-        <app-table
+        <ag-grid-table
           style="height: 300px"
           ref="terminalList"
           :column-defs="columnDefs"
@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import AppPagination from '@/components/AppPagination'
 
 export default {
   name: 'TerminalModal',
 
   components: {
-    AppTable, AppPagination
+    AgGridTable, AppPagination
   },
 
   data () {

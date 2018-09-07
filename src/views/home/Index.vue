@@ -7,25 +7,26 @@
           <el-tab-pane label="昨天" name="yesterday"/>
           <el-tab-pane label="近7" name="lastWeek"/>
           <el-tab-pane label="本月" name="thisMonth"/>
-          <el-tab-pane>
+          <el-tab-pane name="other">
             <span slot="label">
               日期范围选择：
               <date-picker
                 :value="beginDate"
                 @change="date => beginDate = date"
-                placeholder="开始时间"/>
+                placeholder="开始时间"
+                type="datetime"/>
               <span>-</span>
               <date-picker
-                type="date"
                 :value="endDate"
                 @change="date => endDate = date"
-                placeholder="结束时间"/>
+                placeholder="结束时间"
+                type="datetime"/>
               <el-button type="primary" style="position:relative; bottom: 1px" @click="submit">确定</el-button>
             </span>
           </el-tab-pane>
         </el-tabs>
 
-        <div class="content-container">
+        <div class="content-container" v-loading="loading">
           <el-row :gutter="20">
             <el-col :span="12">
               <el-card shadow="hover">
@@ -130,12 +131,14 @@ export default {
       activeName: 'tody',
       beginDate: '',
       endDate: '',
-      situation: 'best'
+      situation: 'best',
+      loading: false
     }
   },
 
   created () {
     this.initRedirect()
+    this.fetchData()
   },
 
   mounted () {
@@ -143,6 +146,54 @@ export default {
   },
 
   methods: {
+    fetchData () {
+      this.loading = true
+      const data = {
+        type: this.getQueryType()
+      }
+      if (this.activeName === 'other') {
+        data.date = {
+          rq_begin: this.beginDate,
+          rq_end: this.endDate
+        }
+      }
+      this.$httpAuth({
+        url: '/manager/queryPageData',
+        method: 'post',
+        data: data
+      }).then(res => {
+        this.loading = false
+        console.log(res)
+        this.$message({ message: res.Message.toString(), type: 'error' })
+      })
+    },
+
+    getQueryType () {
+      let type = 0
+      switch (this.activeName) {
+        case 'tody':
+          type = 0
+          break
+
+        case 'yesterday':
+          type = 1
+          break
+
+        case 'lastWeek':
+          type = 7
+          break
+
+        case 'thisMonth':
+          type = -1
+          break
+
+        case 'other':
+          type = -2
+          break
+      }
+      return type
+    },
+
     // 如果有通知，弹出通知弹框，没有通知，跳到新手引导页面
     initRedirect () {
       const noticeId = this.$store.state.sysOption.noticeId
@@ -158,13 +209,16 @@ export default {
     },
 
     tagClick () {
-      console.log('ddd')
+      if (this.activeName !== 'other') {
+        this.fetchData()
+      }
     },
 
     submit () {
       if (!this.beginDate || !this.endDate) {
         this.$message({ message: '请选择时间', type: 'warning' })
       }
+      this.fetchData()
     },
 
     initChart () {

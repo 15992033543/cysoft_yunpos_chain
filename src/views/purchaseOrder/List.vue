@@ -52,7 +52,7 @@
     </el-form>
 
     <div>
-      <app-table
+      <ag-grid-table
         :column-defs="columnDefs"
         :row-data="orderList"
         :loading="loading"
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import OperationCell from '@/components/agGrid/OperationCell'
 import NormalCell from '@/components/agGrid/NormalCell'
 import AppPagination from '@/components/AppPagination'
@@ -81,7 +81,7 @@ export default {
   name: 'PurchaseOrderList',
 
   components: {
-    DatePicker, AppTable, AppPagination
+    DatePicker, AgGridTable, AppPagination
   },
 
   data () {

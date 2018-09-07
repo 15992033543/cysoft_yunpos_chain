@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import DateRangePicker from '@/components/DateRangePicker'
 import AppPagination from '@/components/AppPagination'
 
@@ -36,7 +36,7 @@ export default {
   name: 'CashFlow',
 
   components: {
-    AppTable, DateRangePicker, AppPagination
+    AgGridTable, DateRangePicker, AppPagination
   },
 
   data () {

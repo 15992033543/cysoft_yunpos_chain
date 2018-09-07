@@ -31,7 +31,7 @@
     </div>
 
     <div>
-      <app-table
+      <ag-grid-table
         ref="tableEl"
         token="tableEl"
         :column-defs="columnDefs"
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import DatePicker from '@/components/DatePicker'
 import AppPagination from '@/components/AppPagination'
 
@@ -60,7 +60,7 @@ export default {
   name: 'StoreSalesDay',
 
   components: {
-    AppTable, DatePicker, AppPagination
+    AgGridTable, DatePicker, AppPagination
   },
 
   data () {

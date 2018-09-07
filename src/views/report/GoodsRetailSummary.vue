@@ -65,7 +65,7 @@
       <el-radio-button v-for="item in tags" :key="item.label" :label="item.label">{{ item.name }}</el-radio-button>
     </el-radio-group>
     <div style="margin-top: 18px">
-      <app-table
+      <ag-grid-table
         v-show="tagSelected === 'goods'"
         ref="goodsEl"
         token="goods"
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import AppPagination from '@/components/AppPagination'
 import DatePicker from '@/components/DatePicker'
 
@@ -95,7 +95,7 @@ export default {
   name: 'GoodsRetailSummary',
 
   components: {
-    AppTable, DatePicker, AppPagination
+    AgGridTable, DatePicker, AppPagination
   },
 
   data () {

@@ -54,7 +54,7 @@
               </div>
             </el-form>
           </div>
-          <app-table
+          <ag-grid-table
             :column-defs="columnDefs"
             :row-data="tableData"
             @columns-ready="columns => columnDefs = columns"
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import AppTable from '@/components/agGrid/AppTable'
+import AgGridTable from '@/components/agGrid/AgGridTable'
 import AppPagination from '@/components/AppPagination'
 import CheckBoxHeader from '@/components/agGrid/CheckBoxHeader'
 import CheckBoxCell from '@/components/agGrid/CheckBoxCell'
@@ -79,7 +79,7 @@ export default {
   name: 'GoodsModal',
 
   components: {
-    AppTable, AppPagination
+    AgGridTable, AppPagination
   },
 
   data () {
