@@ -140,12 +140,13 @@ export default {
         {
           headerName: '操作',
           field: 'op',
-          width: 185,
+          width: 190,
           lockPinned: true, // 锁定，不能移动
           pinned: 'right', // 固定在右侧
           suppressResize: true, // 禁止改变列宽
           suppressMovable: true, // 禁止移动列
           cellRendererFramework: OperationCell, // 操作拦组件
+          suppressSizeToFit: true,
           cellRendererParams: {
             btns: [ // 操作栏按钮
               { btnClass: 'fa fa-eye', btnName: '查看', callback: this.detail },
