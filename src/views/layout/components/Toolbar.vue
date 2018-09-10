@@ -105,7 +105,6 @@ export default {
 <style scoped lang="scss">
   .toolbar-container {
     position: absolute;
-    width: 420px;
     height: 50px;
     line-height: 50px;
     right: 30px;
